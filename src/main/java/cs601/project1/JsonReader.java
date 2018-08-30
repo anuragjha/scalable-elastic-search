@@ -94,7 +94,7 @@ public class JsonReader {
 	}
 	
 	private void FileTypeSorter(JsonObject object)	{
-		
+		//start here NOW !!!!
 	}
 	
 	public static void main(String[] args) {
