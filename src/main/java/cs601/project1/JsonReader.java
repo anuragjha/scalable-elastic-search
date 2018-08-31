@@ -22,16 +22,13 @@ import com.google.gson.JsonParser;
  */
 public class JsonReader {
 
-	private boolean isReviews;
-	private boolean isQuesAns;
+	private String thisFileIs;
 	
 	/**
 	 * Constructor
 	 */
 	public JsonReader()	{
 		super();
-		isReviews = false;
-		isQuesAns = false;
 		
 	}
 	/**
@@ -40,11 +37,9 @@ public class JsonReader {
 	 * Method readNow takes Json file as input and sends it to appropriate class
 	 * 
 	 */ 
-	//	 * ? is it good practice to put reader 
+	//	 * ? is it good practice to put reader in constructor 
 	public JsonReader(String inputFile)	{
 		super();
-		isReviews = false;
-		isQuesAns = false;
 	}
 	
 	/**
@@ -56,6 +51,7 @@ public class JsonReader {
 	// necessarily have to return anything
 	public boolean readNow(String inputFile)	{
 		
+		//String thisFileIs;
 		JsonParser parser = new JsonParser();
 		Path path = Paths.get(inputFile);
 		
@@ -78,34 +74,132 @@ public class JsonReader {
 				//nameElelemt: "1466736038"
 				
 				//sending JsonObject into the data type sorter method and beyond
-				this.FileTypeSorter(object);
+				this.FileTypeSorter(object); //can check inputFile string to save
+				//from calling he function for every record and insted call for every file
+				//should i declare all the object variables here ?
 				
 				
 			}
 			return true; //indicate all records of file read and sent to DataSorter
 		}
 		catch(IOException ioe)	{
+			System.out.println("IOE exception raised");
 			System.out.println(ioe.getMessage());
 			System.out.println(ioe.getStackTrace());
+			return false;
 		}
-		
-		return false;
 		
 	}
 	
 	private void FileTypeSorter(JsonObject object)	{
-		//start here NOW !!!!
+		
+		//if nameElement == reviewerID
+		//		send to ReviewsData
+		//if nameElement == questionType
+		//		send to QuesAnsData
+		JsonElement nameElement; //cannot declare under if stmt
+		if((nameElement = object.get("reviewerID")) != null)	{
+			
+			System.out.println("it is review object");
+			readReviewsData(object);
+			//return "Review";
+			
+		}
+		else
+		if((nameElement = object.get("questionType")) != null)	{
+			
+			System.out.println("QuestionType");
+			readQuesAnsData(object);
+			//return "QuesAns";
+			
+		}
+		else	{
+			System.out.println("Unreadable data format");
+			//return "Dontknow";
+		}
+		
+		
+	}
+	
+	private void readReviewsData(JsonObject object)	{
+		
+		//Reviews object ->
+		//reviewerID, asin, reviewerName, helpful, reviewText, overall, summary, 
+		//unixReviewTime, reviewTime
+		System.out.println("inside review reader");
+		//JsonElement nameElement;
+		//nameElement = object.get("reviewerID");
+		//String reviewerID = nameElement.getAsString();
+		String reviewerID = object.get("reviewerID").getAsString(); //can directly do this
+		String asin = object.get("asin").getAsString();
+		String reviewerName; //needed coz of line 270 in json file
+		if(object.get("reviewerName") != null)	{
+			reviewerName = object.get("reviewerName").getAsString();
+		}
+		else	{
+			reviewerName = "";
+		}
+		int[] helpful = new int[2];
+		helpful[0] = object.get("helpful").getAsJsonArray().get(0).getAsInt();
+		helpful[1] = object.get("helpful").getAsJsonArray().get(1).getAsInt();
+		String reviewText = object.get("reviewText").getAsString();
+		double overall = object.get("overall").getAsDouble();
+		String summary = object.get("summary").getAsString();
+		String unixReviewTime = object.get("unixReviewTime").getAsString();
+		String reviewTime = object.get("reviewTime").getAsString();
+		//to test this method
+		//System.out.printf("in review reader: %s, %s, %s, [%d,%d], %s, %f, %s, %s, %s \n", 
+		//		reviewerID, asin, reviewerName, helpful[0], helpful[1], reviewText,
+		//		overall, summary, unixReviewTime, reviewTime);
+		new Reviews(reviewerID, asin, reviewerName, helpful, reviewText, 
+				overall, summary, unixReviewTime, reviewTime);
+		
+	}
+	
+	private void readQuesAnsData(JsonObject object)	{
+		
+		//because nameElement was QuesType in FileTypeSorter
+		//QuesAns object ->
+		//questionType;asin;answerTime;unixTime;question;answerType;answer;
+		System.out.println("inside QuesAns reader");
+		//JsonElement nameElement;
+		//nameElement = object.get("questionType");
+		//String questionType = nameElement.getAsString();
+		String questionType = object.get("questionType").getAsString(); //can directly do this
+		String asin = object.get("asin").getAsString();
+		String answerTime = object.get("answerTime").getAsString();
+		String unixTime;
+		if(object.get("unixTime") != null)	{
+			unixTime = object.get("unixTime").getAsString();
+		}
+		else	{
+			unixTime = "";
+		}
+		String question = object.get("question").getAsString();
+		String answerType;
+		if(object.get("answerType") != null)	{
+			answerType = object.get("answerType").getAsString();
+		}
+		else	{
+			answerType = "";
+		}
+		String answer = object.get("answer").getAsString();
+		System.out.printf("in QuesAns reader: %s, %s, %s, %s, %s, %s, %s \n", 
+				questionType, asin, answerTime, unixTime,
+				question, answerType, answer);
+		new QuesAns(questionType, asin, answerTime, unixTime, question,
+				answerType, answer);
 	}
 	
 	public static void main(String[] args) {
 		
 		//Testing class JsonReader here
 		
-		JsonReader jr = new JsonReader("reviews_Cell_Phones_and_Accessories_5_sample.json");
-		jr.readNow("reviews_Cell_Phones_and_Accessories_5_sample.json");
-		
-		//JsonReader jr = new JsonReader("qa_Cell_Phones_and_Accessories_sample.json");
-		//jr.readNow("qa_Cell_Phones_and_Accessories_sample.json");
+		JsonReader jr1 = new JsonReader();
+		//jr1.readNow("reviews_Cell_Phones_and_Accessories_5.json");
+		jr1.readNow("qa_Cell_Phones_and_Accessories.json");
+		//JsonReader jr2 = new JsonReader("qa_Cell_Phones_and_Accessories_sample.json");
+		//jr2.readNow("qa_Cell_Phones_and_Accessories_sample.json");
 	}
 
 }
