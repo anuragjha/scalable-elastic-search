@@ -25,27 +25,9 @@ public class QuesAns {
 		this.answerType = answerType;
 		this.answer = answer;
 		//send data to DataStore
-		System.out.println("yay !! QuestionType1: counter: "+QuesAns.counter);
+		System.out.println("yay !! QuestionType: counter: "+QuesAns.counter);
 		
 	}
-	
-	public QuesAns(String questionType, String asin, String answerTime, String unixTime, 
-			String question, String answer) {
-		super();
-		QuesAns.counter += 1;
-		this.questionType = questionType;
-		this.asin = asin;
-		this.answerTime = answerTime;
-		this.unixTime = unixTime;
-		this.question = question;
-		//this.answerType = answerType;
-		this.answer = answer;
-		//send data to DataStore
-		System.out.println("yay !! QuestionType2: counter: "+QuesAns.counter);
-		
-	}
-
-
 
 
 	public static void main(String[] args) {

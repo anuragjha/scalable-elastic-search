@@ -33,6 +33,7 @@ public class Reviews {
 		// send the data to DataStore
 		Reviews.counter += 1;
 		System.out.println("yay !! review object, counter: " + counter);
+		//so if everything is ok.. send review record to DataStore
 	}
 
 	

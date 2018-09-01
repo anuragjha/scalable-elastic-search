@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * 
@@ -22,14 +23,14 @@ import com.google.gson.JsonParser;
  */
 public class JsonReader {
 
-	private String thisFileIs;
-	
+	//private String thisFileIs;
+
 	/**
 	 * Constructor
 	 */
 	public JsonReader()	{
 		super();
-		
+
 	}
 	/**
 	 * Constructor
@@ -41,7 +42,7 @@ public class JsonReader {
 	public JsonReader(String inputFile)	{
 		super();
 	}
-	
+
 	/**
 	 * 
 	 * @param inputFile
@@ -49,80 +50,91 @@ public class JsonReader {
 	 */
 	//	 * ? is it a good practice to return boolean from methods that dont 
 	// necessarily have to return anything
-	public boolean readNow(String inputFile)	{
-		
+	public boolean readJsonFile(String inputFile)	{
+
 		//String thisFileIs;
 		JsonParser parser = new JsonParser();
 		Path path = Paths.get(inputFile);
-		
+
 		try(
 				BufferedReader reader = Files.newBufferedReader(path, Charset.forName("ISO-8859-1"))
 				)	{
 			String line;
 			while(((line = reader.readLine())) != null)	{
-				JsonElement element = parser.parse(line);
-				//System.out.println("element: " + element); // checking JsonElement
-				//Reviews - element: {"reviewerID":"A30TL5EWN6DFXT","asin":"120401325X","reviewerName":"christina","helpful":[0,0],"reviewText":"They look good and stick good! I just don't like the rounded shape because I was always bumping it and Siri kept popping up and it was irritating. I just won't buy a product like this again","overall":4.0,"summary":"Looks Good","unixReviewTime":1400630400,"reviewTime":"05 21, 2014"}
-				//QuesAns - element: {"questionType":"yes/no","asin":"1466736038","answerTime":"Mar 8, 2014","unixTime":1394265600,"question":"Is there a SIM card in it?","answerType":"Y","answer":"Yes. The Galaxy SIII accommodates a micro SIM card."}
+
+				try	{
+					JsonElement element = parser.parse(line);
+
+					//System.out.println("element: " + element); // checking JsonElement
+					//Reviews - element: {"reviewerID":"A30TL5EWN6DFXT","asin":"120401325X","reviewerName":"christina","helpful":[0,0],"reviewText":"They look good and stick good! I just don't like the rounded shape because I was always bumping it and Siri kept popping up and it was irritating. I just won't buy a product like this again","overall":4.0,"summary":"Looks Good","unixReviewTime":1400630400,"reviewTime":"05 21, 2014"}
+					//QuesAns - element: {"questionType":"yes/no","asin":"1466736038","answerTime":"Mar 8, 2014","unixTime":1394265600,"question":"Is there a SIM card in it?","answerType":"Y","answer":"Yes. The Galaxy SIII accommodates a micro SIM card."}
+
+					JsonObject object = element.getAsJsonObject();
+					//System.out.println("object: " + object); // checking JsonObject
+					//object: {"reviewerID":"A2RF9FHC4HC3JO","asin":"8288855504","reviewerName":"E. Hall","helpful":[0,0],"reviewText":"I bought this for my Samsung Charge. It works perfectly and is built as solidly as the $20 Verizon charger. I highly recommend this car charger and thanks for the great price!","overall":5.0,"summary":"Great product - Great price","unixReviewTime":1307145600,"reviewTime":"06 4, 2011"}
+
+					//JsonElement nameElement = object.get("asin");
+					//System.out.println("nameElelemt: " + nameElement);  //checking asin
+					//nameElelemt: "1466736038"
+
+					//sending JsonObject into the data type sorter method and beyond
+					this.JsonTypeSorter(object); //can check inputFile string to save
+					//from calling he function for every record and insted call for every file
+					//should i declare all the object variables here ?
+				}
+				catch(JsonSyntaxException jse) {
+					
+					System.out.println("Line skipped...");
 				
-				JsonObject object = element.getAsJsonObject();
-				//System.out.println("object: " + object); // checking JsonObject
-				//object: {"reviewerID":"A2RF9FHC4HC3JO","asin":"8288855504","reviewerName":"E. Hall","helpful":[0,0],"reviewText":"I bought this for my Samsung Charge. It works perfectly and is built as solidly as the $20 Verizon charger. I highly recommend this car charger and thanks for the great price!","overall":5.0,"summary":"Great product - Great price","unixReviewTime":1307145600,"reviewTime":"06 4, 2011"}
-				
-				//JsonElement nameElement = object.get("asin");
-				//System.out.println("nameElelemt: " + nameElement);  //checking asin
-				//nameElelemt: "1466736038"
-				
-				//sending JsonObject into the data type sorter method and beyond
-				this.FileTypeSorter(object); //can check inputFile string to save
-				//from calling he function for every record and insted call for every file
-				//should i declare all the object variables here ?
-				
-				
+				}
+
 			}
 			return true; //indicate all records of file read and sent to DataSorter
 		}
+		//catch(JsonSyntaxException	jse)	{
+		//get on with it - go to the next line
+		//}
 		catch(IOException ioe)	{
 			System.out.println("IOE exception raised");
 			System.out.println(ioe.getMessage());
 			System.out.println(ioe.getStackTrace());
 			return false;
 		}
-		
+
 	}
-	
-	private void FileTypeSorter(JsonObject object)	{
-		
+
+	private void JsonTypeSorter(JsonObject object)	{
+
 		//if nameElement == reviewerID
 		//		send to ReviewsData
 		//if nameElement == questionType
 		//		send to QuesAnsData
-		JsonElement nameElement; //cannot declare under if stmt
-		if((nameElement = object.get("reviewerID")) != null)	{
-			
+		//JsonElement nameElement; //cannot declare under if stmt
+		if((object.get("reviewerID")) != null)	{
+
 			System.out.println("it is review object");
 			readReviewsData(object);
 			//return "Review";
-			
+
 		}
 		else
-		if((nameElement = object.get("questionType")) != null)	{
-			
-			System.out.println("QuestionType");
-			readQuesAnsData(object);
-			//return "QuesAns";
-			
-		}
-		else	{
-			System.out.println("Unreadable data format");
-			//return "Dontknow";
-		}
-		
-		
+			if((object.get("questionType")) != null)	{
+				
+				System.out.println("QuestionType");
+				readQuesAnsData(object);
+				//return "QuesAns";
+
+			}
+			else	{
+				System.out.println("Unreadable data format");
+				//return "Dontknow";
+			}
+
+
 	}
-	
+
 	private void readReviewsData(JsonObject object)	{
-		
+
 		//Reviews object ->
 		//reviewerID, asin, reviewerName, helpful, reviewText, overall, summary, 
 		//unixReviewTime, reviewTime
@@ -153,11 +165,11 @@ public class JsonReader {
 		//		overall, summary, unixReviewTime, reviewTime);
 		new Reviews(reviewerID, asin, reviewerName, helpful, reviewText, 
 				overall, summary, unixReviewTime, reviewTime);
-		
+
 	}
-	
+
 	private void readQuesAnsData(JsonObject object)	{
-		
+
 		//because nameElement was QuesType in FileTypeSorter
 		//QuesAns object ->
 		//questionType;asin;answerTime;unixTime;question;answerType;answer;
@@ -190,14 +202,14 @@ public class JsonReader {
 		new QuesAns(questionType, asin, answerTime, unixTime, question,
 				answerType, answer);
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		//Testing class JsonReader here
-		
+
 		JsonReader jr1 = new JsonReader();
-		//jr1.readNow("reviews_Cell_Phones_and_Accessories_5.json");
-		jr1.readNow("qa_Cell_Phones_and_Accessories.json");
+		jr1.readJsonFile("reviews_Cell_Phones_and_Accessories_5.json");
+		jr1.readJsonFile("qa_Cell_Phones_and_Accessories.json");
 		//JsonReader jr2 = new JsonReader("qa_Cell_Phones_and_Accessories_sample.json");
 		//jr2.readNow("qa_Cell_Phones_and_Accessories_sample.json");
 	}
