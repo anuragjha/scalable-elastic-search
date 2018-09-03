@@ -1,7 +1,6 @@
 package cs601.project1;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.util.LinkedList;
 
 public class Reviews {
 
@@ -15,8 +14,9 @@ public class Reviews {
 	private String unixReviewTime; // will have to find correct datatype
 	private String reviewTime; //will have to find correct datatype
 	
-	private static int counter = 0;
-	
+	private static int recordCounter = 0; //need for unique record id
+	private static final String RecordType = "rv";
+	private String recordId;
 	
 	public Reviews(String reviewerID, String asin, String reviewername, int[] helpful, String reviewText,
 			double overall, String summary, String unixReviewTime, String reviewTime) {
@@ -30,15 +30,68 @@ public class Reviews {
 		this.summary = summary;
 		this.unixReviewTime = unixReviewTime;
 		this.reviewTime = reviewTime;
-		// send the data to DataStore
-		Reviews.counter += 1;
-		System.out.println("yay !! review object, counter: " + counter);
+		
+		Reviews.recordCounter += 1;
+		recordId = Reviews.RecordType+String.valueOf(Reviews.recordCounter);
+		
+		System.out.println("yay !! review object, counter: " + recordCounter);
 		//so if everything is ok.. send review record to DataStore
+		// send the data to DataStore
+		this.sendToDataStore();
+		
+	}
+	
+	public String getRecordType()	{
+		return RecordType;
+	}
+
+	public String getRecordId() {
+		return recordId;
 	}
 
 	
+	public String toString()	{
+		return this.reviewerID+"\n"+this.asin+"\n"+this.reviewername+"\n"+this.helpful+"\n"+
+				this.reviewText+"\n"+this.overall+"\n"+this.summary+"\n"+this.unixReviewTime +
+				"\n"+this.reviewTime+"\n";
+	}
+	
+	private String getStringToGetWords()	{
+		return this.reviewerID+" "+
+				this.asin+" "+
+				this.reviewername+" "+ 
+				this.reviewText+" "+
+				this.summary;
+	}
+	
+	public String[] getWords()	{
+		String[] wordsInRecord = this.getStringToGetWords().split(" ");
+		for(int i = 0; i < wordsInRecord.length; i++)	{
+			System.out.println("s: "+ wordsInRecord[i]);
+			wordsInRecord[i] = wordsInRecord[i].replaceAll(",","").trim(); //put regex to exclude everything except alpha numeric
+			System.out.println("s: "+ wordsInRecord[i]);
+		}
+		return wordsInRecord;
+		
+	}
+	
+	
+	public void sendToDataStore()	{
+		DataStore.ONE.updateDataStore(this);
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Reviews r = new Reviews("Anu123","23094jshdf","Anurag",new int[] {7,8} , "just testing but nothing serious", 6.0,
+				"yea ok, this is summary , but creating dummy record", "23-40sdf", "sdf02323");
+		System.out.println(r.getRecordId());
+		System.out.println(r.toString());
+		r.getWords();
+		Reviews r1= new Reviews("Anu123","23094jshdf","Anurag",new int[] {7,8} , "just testing nothing serious", 6.0,
+				"yea ok, this is summary, creating second dummy record", "23-40sdf", "sdf02323");
+		System.out.println(r1.getRecordId());
+		System.out.println(r1.toString());
+		System.out.println(DataStore.ONE.keyWordStore.toString());
 
 	}
 

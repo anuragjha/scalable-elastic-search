@@ -26,9 +26,12 @@ public class QuesAns {
 		this.answer = answer;
 		//send data to DataStore
 		System.out.println("yay !! QuestionType: counter: "+QuesAns.counter);
-		
+		sendToDataStore();
 	}
 
+	public void sendToDataStore()	{
+		DataStore.ONE.updateDataStore(this);
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
