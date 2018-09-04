@@ -112,7 +112,7 @@ public class JsonReader {
 		//JsonElement nameElement; //cannot declare under if stmt
 		if((object.get("reviewerID")) != null)	{
 
-			System.out.println("it is review object");
+			////System.out.println("it is review object");
 			readReviewsData(object);
 			//return "Review";
 
@@ -138,7 +138,7 @@ public class JsonReader {
 		//Reviews object ->
 		//reviewerID, asin, reviewerName, helpful, reviewText, overall, summary, 
 		//unixReviewTime, reviewTime
-		System.out.println("inside review reader");
+		////System.out.println("inside review reader");
 		//JsonElement nameElement;
 		//nameElement = object.get("reviewerID");
 		//String reviewerID = nameElement.getAsString();
@@ -208,10 +208,11 @@ public class JsonReader {
 		//Testing class JsonReader here
 
 		JsonReader jr1 = new JsonReader();
+		//jr1.readJsonFile("reviews_Cell_Phones_and_Accessories_5_sample.json");
 		jr1.readJsonFile("reviews_Cell_Phones_and_Accessories_5.json");
-		jr1.readJsonFile("qa_Cell_Phones_and_Accessories.json");
-		//JsonReader jr2 = new JsonReader("qa_Cell_Phones_and_Accessories_sample.json");
 		//jr2.readNow("qa_Cell_Phones_and_Accessories_sample.json");
+		System.out.println("recordStore :"+DataStore1.ONE.recordStore.keySet());
+		System.out.println("keyWord Store: "+DataStore1.ONE.keyWordStore);
 	}
 
 }

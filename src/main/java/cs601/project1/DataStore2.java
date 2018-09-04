@@ -1,19 +1,33 @@
+/**
+ * 
+ */
 package cs601.project1;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
-public enum DataStore {
+/**
+ * @author anuragjha
+ *
+ */
+/*
+ * one hashmap of recordtype/id - freq pair
+ */
+public enum DataStore2 {
+
 	     
 	ONE;
 	
 	//data of the whole record; key - record id, value - whole record data
+	//HashMap<String, String> recordStore = new HashMap<String, String>();
 	HashMap<String, String> recordStore = new HashMap<String, String>();
 	
 	//KeyWordStore - key is word & value is String of record ids and freq count
 	//sample key, value
 	// key - rainbow, value - rv+8,rv2+1,rv5+4,rv7+3,qa+4,qa1+2,qa3+2
-	HashMap<String, StringBuilder> keyWordStore = new HashMap<String, StringBuilder>();
+	HashMap<String, String> keyWordStore = new HashMap<String, String>();
+	//HashMap<String, HashMap<String, Integer>> keyWordStore = new HashMap<String, String>();
 	
 	
 	public void updateDataStore(Reviews review)	{
@@ -21,12 +35,12 @@ public enum DataStore {
 		
 		//updating Record Store //
 		recordStore.put(review.getRecordId(), review.toString());
-		System.out.println("recordStore :"+DataStore.ONE.recordStore);
+		System.out.println("recordStore :"+DataStore2.ONE.recordStore.keySet());
 		
 		//updating KeyWord Store //
-		String[] wordsInRecord = review.getWords();
+		String[] wordsInRecord = review.getWords(); //creates string of lowercase words of text in reviewText and Summary
 		for(String word : wordsInRecord)	{
-			if(DataStore.ONE.keyWordStore.containsKey(word))	{
+			if(DataStore2.ONE.keyWordStore.containsKey(word))	{
 				//build value string
 				updateWordInKeyWordDataStore(word, review.getRecordType(), review.getRecordId());
 			}
@@ -43,47 +57,50 @@ public enum DataStore {
 	}
 	
 	public void addNewWordInKeyWordDataStore(String word, String recordType ,String recordId)	{
-		StringBuilder value = new StringBuilder();
+		//StringBuilder value = new StringBuilder();
 		//value = recordType+1,recordId+1
-		value.append(recordType+"+1,"+recordId+"+1,");
-		DataStore.ONE.keyWordStore.put(word, value);
+		String value = new String(recordType+"-1,"+recordId+"-1,");
+		//value.append(recordType+"-1,"+recordId+"-1,");
+		DataStore2.ONE.keyWordStore.put(word, value);
 	}
 
 	//START here - use hashmap to store the values in value string of the word --- 
 	//converting to tree hashmap as order of entry needed
 		public void updateWordInKeyWordDataStore(String word, String recordType, String recordId)	{ 
-			StringBuilder value = new StringBuilder();
-			value = DataStore.ONE.keyWordStore.get(word);
+			//StringBuilder value = new StringBuilder();
+			String value = DataStore2.ONE.keyWordStore.get(word);
 			boolean updated = false;
 			
 			//System.out.println(value);
 			
-			String[] wordValue = value.toString().split(",");
-			HashMap<String,Integer> wordValueHashMap = new HashMap<String, Integer>(); // tmp hash map for calculations
+			String[] wordValue = value.split(",");
+			HashMap<String,Integer> wordValueMap = new HashMap<String, Integer>(); // tmp hash map for calculations //treemap
 			
 			System.out.println("wordValue:"+wordValue[0]); 
 			// looping through each recordId+count pair of a given word in DataStore
 			for(int i = 0; i < wordValue.length; i++)	{ //add hashmap inside to store and and increment
-				String[] recNCount = wordValue[i].split("+"); //spliting recordId+count pair
-				String thisRec = recNCount[0];
-				int thisCount = Integer.parseInt(recNCount[1]);
-				wordValueHashMap.put(thisRec, thisCount);
+				String[] recNCount = wordValue[i].split("-"); //spliting recordId+count pair
+				//String thisRec = recNCount[0];
+				//int thisCount = Integer.parseInt(recNCount[1]);
+				//wordValueMap.put(thisRec, thisCount);
+				wordValueMap.put(recNCount[0], Integer.parseInt(recNCount[1]));
 			} //now here data is in hash map
 			//now comparing the previous data with a new =>  word-recordId details
 			
 			//updating the count for recordType
-			if(wordValueHashMap.containsKey(recordType))	{
-				int thisTypeCount = wordValueHashMap.get(recordType);
-				thisTypeCount = thisTypeCount + 1;
-				wordValueHashMap.put(recordType, thisTypeCount);
+			if(wordValueMap.containsKey(recordType))	{
+				int thisTypeCount = wordValueMap.get(recordType);
+				//thisTypeCount = thisTypeCount + 1;
+				wordValueMap.put(recordType, thisTypeCount + 1);
 				//updating count for individual recordID
-				if(wordValueHashMap.containsKey(recordId))	{
-					int thisRecordCount = wordValueHashMap.get(recordId);
-					thisRecordCount += 1;
-					wordValueHashMap.put(recordId, thisRecordCount);
+				if(wordValueMap.containsKey(recordId))	{
+					int thisRecordCount = wordValueMap.get(recordId);
+					//thisRecordCount += 1;
+					wordValueMap.put(recordId, thisRecordCount + 1);
 				}
 				else {
-					wordValueHashMap.put(recordId, 1);
+					//new record
+					wordValueMap.put(recordId, 1);
 				}
 			} // hashmap updated for recordID 
 			
@@ -93,15 +110,14 @@ public enum DataStore {
 			StringBuilder newValue = new StringBuilder();
 			//starting with recordType+count,
 			//newValue.append(recordType+"+"+
-			for(Map.Entry<String, StringBuilder> entry : keyWordStore.entrySet())	{
+			for(Map.Entry<String, Integer> entry : wordValueMap.entrySet())	{
 				//starting with recordType+count
-				if(entry.getValue().toString().equals(recordType))	{
-			//		int thisTypeCount = entry.
-			//		newValue.append(recordType+"+"+) // TreeHash Map needed
-				}
-			}
+				newValue.append(entry.getKey()+"-"+entry.getValue()+",");
+			} // newValue is a StringBuilder object -> storing value string for keyWordStore
 			
-			
+			//updating the DataStore with the newValue
+			System.out.println("new Value: "+newValue);
+			DataStore2.ONE.keyWordStore.put(word, newValue.toString());
 			//DataStore.ONE.keyWordStore.put(word, value); // updating new value in DataStore
 			
 		}
@@ -148,7 +164,7 @@ public enum DataStore {
 	*/
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(DataStore.ONE);
+		System.out.println(DataStore2.ONE);
 		
 	}
 
