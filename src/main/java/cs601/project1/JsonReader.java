@@ -89,6 +89,7 @@ public class JsonReader {
 				}
 
 			}
+			System.out.println("File Read Complete");
 			return true; //indicate all records of file read and sent to DataSorter
 		}
 		//catch(JsonSyntaxException	jse)	{
@@ -100,7 +101,7 @@ public class JsonReader {
 			System.out.println(ioe.getStackTrace());
 			return false;
 		}
-
+		
 	}
 
 	private void JsonTypeSorter(JsonObject object)	{
@@ -120,7 +121,7 @@ public class JsonReader {
 		else
 			if((object.get("questionType")) != null)	{
 				
-				System.out.println("QuestionType");
+				//System.out.println("QuestionAns record");
 				readQuesAnsData(object);
 				//return "QuesAns";
 
@@ -173,7 +174,7 @@ public class JsonReader {
 		//because nameElement was QuesType in FileTypeSorter
 		//QuesAns object ->
 		//questionType;asin;answerTime;unixTime;question;answerType;answer;
-		System.out.println("inside QuesAns reader");
+		////System.out.println("inside QuesAns reader");
 		//JsonElement nameElement;
 		//nameElement = object.get("questionType");
 		//String questionType = nameElement.getAsString();
@@ -188,7 +189,7 @@ public class JsonReader {
 			unixTime = "";
 		}
 		String question = object.get("question").getAsString();
-		String answerType;
+		String answerType; //handling for cases that have no answertype field
 		if(object.get("answerType") != null)	{
 			answerType = object.get("answerType").getAsString();
 		}
@@ -196,9 +197,9 @@ public class JsonReader {
 			answerType = "";
 		}
 		String answer = object.get("answer").getAsString();
-		System.out.printf("in QuesAns reader: %s, %s, %s, %s, %s, %s, %s \n", 
-				questionType, asin, answerTime, unixTime,
-				question, answerType, answer);
+		//System.out.printf("in QuesAns reader: %s, %s, %s, %s, %s, %s, %s \n", 
+		//		questionType, asin, answerTime, unixTime,
+		//		question, answerType, answer);
 		new QuesAns(questionType, asin, answerTime, unixTime, question,
 				answerType, answer);
 	}
@@ -209,10 +210,17 @@ public class JsonReader {
 
 		JsonReader jr1 = new JsonReader();
 		//jr1.readJsonFile("reviews_Cell_Phones_and_Accessories_5_sample.json");
-		jr1.readJsonFile("reviews_Cell_Phones_and_Accessories_5.json");
-		//jr2.readNow("qa_Cell_Phones_and_Accessories_sample.json");
-		System.out.println("recordStore :"+DataStore1.ONE.recordStore.keySet());
-		System.out.println("keyWord Store: "+DataStore1.ONE.keyWordStore);
+		//jr1.readJsonFile("reviews_Cell_Phones_and_Accessories_5.json");
+		//System.out.println("rv Store built");
+		//System.out.println(DataStore1.ONE.rvKeyWordStore.get("an"));
+		jr1.readJsonFile("qa_Cell_Phones_and_Accessories_sample.json");
+		//jr1.readJsonFile("qa_Cell_Phones_and_Accessories.json");
+		//System.out.println("keyWord Store: "+DataStore1.ONE.keyWordStore);
+		System.out.println("qa Store built");
+		System.out.println(DataStore1.ONE.qaKeyWordStore.get("an"));
+		//System.out.println("recordStore :"+DataStore1.ONE.recordStore);
+		
+		
 	}
 
 }

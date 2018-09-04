@@ -1,7 +1,5 @@
 package cs601.project1;
 
-import java.util.LinkedList;
-
 public class Reviews {
 
 	private String reviewerID;
@@ -32,7 +30,7 @@ public class Reviews {
 		this.reviewTime = reviewTime;
 		
 		Reviews.recordCounter += 1;
-		recordId = Reviews.RecordType+String.valueOf(Reviews.recordCounter);
+		this.recordId = Reviews.RecordType+String.valueOf(Reviews.recordCounter);
 		
 		//System.out.println("yay !! review object, counter: " + recordCounter);
 		//so if everything is ok.. send review record to DataStore
@@ -42,7 +40,7 @@ public class Reviews {
 	}
 	
 	public void sendToDataStore()	{
-		DataStore1.ONE.updateDataStore(this);
+		DataStore1.ONE.updateRvDataStore(this);
 	}
 	
 	//getters
@@ -65,8 +63,7 @@ public class Reviews {
 		//return this.reviewerID+" "+
 		//		this.asin+" "+
 		//		this.reviewername+" "+ 
-		return		this.reviewText+" "+
-				this.summary;
+		return		this.reviewText+" "+this.summary;
 	}
 	
 	public String[] getWords()	{
@@ -89,12 +86,12 @@ public class Reviews {
 		System.out.println(r.getRecordId());
 		System.out.println(r.toString());
 		r.getWords();
-		System.out.println("keyWordStore: "+DataStore1.ONE.keyWordStore);
+		System.out.println("keyWordStore: "+DataStore1.ONE.rvKeyWordStore);
 		Reviews r1= new Reviews("Anu123","23094jshdf","Anurag",new int[] {7,8} , "just testing nothing serious", 6.0,
 				"yea ok, this but is summary, creating second dummy record", "23-40sdf", "sdf02323");
 		System.out.println(r1.getRecordId());
 		System.out.println(r1.toString());
-		System.out.println("keyWordStore: "+DataStore1.ONE.keyWordStore);
+		System.out.println("keyWordStore: "+DataStore1.ONE.rvKeyWordStore);
 		Reviews r2= new Reviews("Anu34123","2309hdf","Andcurag",new int[] {7,8} , "just testing nothing serious", 6.0,
 				"yea ok, this is summary, creating but second dumafmy record", "23-40sdf", "sdf02323");
 		System.out.println(r2.toString());

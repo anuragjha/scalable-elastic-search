@@ -26,7 +26,7 @@ public enum DataStore2 {
 	//KeyWordStore - key is word & value is String of record ids and freq count
 	//sample key, value
 	// key - rainbow, value - rv+8,rv2+1,rv5+4,rv7+3,qa+4,qa1+2,qa3+2
-	HashMap<String, String> keyWordStore = new HashMap<String, String>();
+	HashMap<String, String> keyWordStore = new HashMap<String, String>(); //Start here - to put hashMap in value of KeyWord Store
 	//HashMap<String, HashMap<String, Integer>> keyWordStore = new HashMap<String, String>();
 	
 	

@@ -15,5 +15,4 @@ public class AmazonSearch {
 // 2. read records inside the json file 
 //		Review recored - 9 params
 //      QuesAns record - 7 or 6 elements based on questype
-// ** so sorter method - where lene of JsonObject is input and it passes through conditions
-// ** to go into Review class or QuesAns class
+//
