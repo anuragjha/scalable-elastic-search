@@ -6,6 +6,7 @@ package cs601.project1;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author anuragjha
@@ -25,8 +26,8 @@ public enum DataStore1 {
 	//sample key, value
 	// key - rainbow, value - rv+8,rv2+1,rv5+4,rv7+3,qa+4,qa1+2,qa3+2
 	//HashMap<String, StringBuilder> keyWordStore = new HashMap<String, StringBuilder>();
-	HashMap<String, String> rvKeyWordStore = new HashMap<String, String>();
-	HashMap<String, String> qaKeyWordStore = new HashMap<String, String>();
+	HashMap<String, StringBuffer> rvKeyWordStore = new HashMap<String, StringBuffer>();
+	HashMap<String, StringBuffer> qaKeyWordStore = new HashMap<String, StringBuffer>();
 
 
 	public void updateRvDataStore(Reviews review)	{
@@ -74,7 +75,7 @@ public enum DataStore1 {
 	public void addNewWordInRvKeyWordDataStore(String word, String recordType ,String recordId)	{
 		//StringBuilder value = new StringBuilder();
 		//value = recordType+1,recordId+1
-		String value = new String(recordType+"-1,"+recordId+"-1,");
+		StringBuffer value = new StringBuffer(recordType+"-1,"+recordId+"-1,");
 		//value.append(recordType+"-1,"+recordId+"-1,");
 		DataStore1.ONE.rvKeyWordStore.put(word, value);
 	}
@@ -82,7 +83,7 @@ public enum DataStore1 {
 	public void addNewWordInQaKeyWordDataStore(String word, String recordType, String recordId)	{
 		//StringBuilder value = new StringBuilder();
 		//value = recordType+1,recordId+1
-		String value = new String(recordType+"-1,"+recordId+"-1,");
+		StringBuffer value = new StringBuffer(recordType+"-1,"+recordId+"-1,");
 		//value.append(recordType+"-1,"+recordId+"-1,");
 		DataStore1.ONE.qaKeyWordStore.put(word, value);
 	}
@@ -91,12 +92,12 @@ public enum DataStore1 {
 	//converting to tree hashmap as order of entry needed // no back to hash map --- Tree map taking time ?
 	public void updateWordInRvKeyWordDataStore(String word, String recordType, String recordId)	{ 
 		//StringBuilder value = new StringBuilder();
-				String value = DataStore1.ONE.rvKeyWordStore.get(word);
+				StringBuffer value = DataStore1.ONE.rvKeyWordStore.get(word);
 				boolean updated = false;
 
 				//System.out.println(value);
 
-				String[] wordValue = value.split(",");
+				String[] wordValue = value.toString().split(",");
 				HashMap<String,Integer> wordValueMap = new HashMap<String, Integer>(); // tmp hash map for calculations //treemap
 				//System.out.println("Comparing"+wordValue.length+"and "+recordType);
 				//if(wordValue.toString().contains(recordType))	{
@@ -131,7 +132,7 @@ public enum DataStore1 {
 
 					//converting Hashmap to StringBuilder, so that keyWordHashMap can update its record
 					//for(Map.Entry<String, Integer> entry : userRevCount.entrySet())
-					StringBuilder newValue = new StringBuilder();
+					StringBuffer newValue = new StringBuffer();
 					//starting with recordType+count,
 					//newValue.append(recordType+"+"+
 					for(Map.Entry<String, Integer> entry : wordValueMap.entrySet())	{
@@ -141,7 +142,7 @@ public enum DataStore1 {
 
 					//updating the DataStore with the newValue
 					//System.out.println("new Value: "+newValue);
-					DataStore1.ONE.rvKeyWordStore.put(word, newValue.toString());
+					DataStore1.ONE.rvKeyWordStore.put(word, newValue);
 					//DataStore.ONE.keyWordStore.put(word, value); // updating new value in DataStore
 					
 				//}
@@ -152,25 +153,19 @@ public enum DataStore1 {
 
 	public void updateWordInQaKeyWordDataStore(String word, String recordType, String recordId)	{
 		//StringBuilder value = new StringBuilder();
-				String value = DataStore1.ONE.qaKeyWordStore.get(word);
+				StringBuffer value = DataStore1.ONE.qaKeyWordStore.get(word);
 				boolean updated = false;
 
 				//System.out.println(value);
 
-				String[] wordValue = value.split(",");
+				String[] wordValue = value.toString().split(",");
 				HashMap<String,Integer> wordValueMap = new HashMap<String, Integer>(); // tmp hash map for calculations //treemap
 				
-				System.out.println("Comparing "+Arrays.toString(wordValue).contains(recordType));
-				if(Arrays.toString(wordValue).contains(recordType))	{//checks if qa is present in value - should always be true
-					if(Arrays.toString(wordValue).contains(recordId))	{ //checks if recordId is present in value string
-						
-					}
-					else	{ //condition for recordId not in the value string : means that the word is first time in the record
-						
-					}
-				}
-					//System.out.println("wordValue:"+wordValue[0]); 
-					// looping through each recordId+count pair of a given word in DataStore
+				//System.out.println("Comparing "+Arrays.toString(wordValue).contains(recordType));
+				//if(Arrays.toString(wordValue).contains(recordType))	{//checks if qa is present in value - should always be true
+				if(value.toString().contains(recordType))	{
+					//have to increment count for overall occurrance
+					//get the value pair
 					for(int i = 0; i < wordValue.length; i++)	{ //add hashmap inside to store and and increment
 						String[] recNCount = wordValue[i].split("-"); //spliting recordId+count pair
 						//String thisRec = recNCount[0];
@@ -178,29 +173,50 @@ public enum DataStore1 {
 						//wordValueMap.put(thisRec, thisCount);
 						wordValueMap.put(recNCount[0], Integer.parseInt(recNCount[1]));
 					} //now here data is in hash map
+					//incrementing the global counter
+					wordValueMap.put(recordType, wordValueMap.get(recordType) + 1);
+					
+					//==> String[] valueNRest = value.toString().split("\b{" + recordType + "-" + "}");
+					//===> System.out.println("pattern value :"+ valueNRest);
+					
+					if(value.toString().contains(recordId))	{ //checks if recordId is present in value string
+						//find the value - recordId-count, 
+						//increment the count
+						wordValueMap.put(recordId, wordValueMap.get(recordId) + 1);
+					}
+					else	{ //condition for recordId not in the value string : means that the word is first time in the record
+						//add recordId-1, to value String
+						//value.append(recordId+"-1,");
+						wordValueMap.put(recordId, 1);
+						
+					}
+				}
+					//System.out.println("wordValue:"+wordValue[0]); 
+					// looping through each recordId+count pair of a given word in DataStore
+					
 					//now comparing the previous data with a new =>  word-recordId details
 
 					//updating the count for recordType
 					//if(wordValueMap.containsKey(recordType))	{
-					int thisTypeCount = wordValueMap.get(recordType);
+					///int thisTypeCount = wordValueMap.get(recordType);
 					//thisTypeCount = thisTypeCount + 1;
-					wordValueMap.put(recordType, thisTypeCount + 1);
+					///wordValueMap.put(recordType, thisTypeCount + 1);
 					//updating count for individual recordID
-					if(wordValueMap.containsKey(recordId))	{
-						int thisRecordCount = wordValueMap.get(recordId);
+					///if(wordValueMap.containsKey(recordId))	{
+					///	int thisRecordCount = wordValueMap.get(recordId);
 						//thisRecordCount += 1;
-						wordValueMap.put(recordId, thisRecordCount + 1);
-					}
-					else {
-						//new record
-						wordValueMap.put(recordId, 1);
+					//	wordValueMap.put(recordId, thisRecordCount + 1);
+				//	}
+				//	else {
+				//		//new record
+				//		wordValueMap.put(recordId, 1);
 						//	}
-					} // hashmap updated for recordID 
+				//	} // hashmap updated for recordID 
 
 
 					//converting Hashmap to StringBuilder, so that keyWordHashMap can update its record
 					//for(Map.Entry<String, Integer> entry : userRevCount.entrySet())
-					StringBuilder newValue = new StringBuilder();
+					StringBuffer newValue = new StringBuffer();
 					//starting with recordType+count,
 					//newValue.append(recordType+"+"+
 					for(Map.Entry<String, Integer> entry : wordValueMap.entrySet())	{
@@ -210,7 +226,7 @@ public enum DataStore1 {
 
 					//updating the DataStore with the newValue
 					//System.out.println("new Value: "+newValue);
-					DataStore1.ONE.qaKeyWordStore.put(word, newValue.toString());
+					DataStore1.ONE.qaKeyWordStore.put(word, newValue);
 					//DataStore.ONE.keyWordStore.put(word, value); // updating new value in DataStore
 					
 				//}

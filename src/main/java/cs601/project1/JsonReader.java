@@ -213,13 +213,15 @@ public class JsonReader {
 		//jr1.readJsonFile("reviews_Cell_Phones_and_Accessories_5.json");
 		//System.out.println("rv Store built");
 		//System.out.println(DataStore1.ONE.rvKeyWordStore.get("an"));
-		jr1.readJsonFile("qa_Cell_Phones_and_Accessories_sample.json");
-		//jr1.readJsonFile("qa_Cell_Phones_and_Accessories.json");
+		//jr1.readJsonFile("qa_Cell_Phones_and_Accessories_sample.json");
+		jr1.readJsonFile("qa_Cell_Phones_and_Accessories.json");
 		//System.out.println("keyWord Store: "+DataStore1.ONE.keyWordStore);
 		System.out.println("qa Store built");
-		System.out.println(DataStore1.ONE.qaKeyWordStore.get("an"));
+		System.out.println(DataStore1.ONE.qaKeyWordStore.get("the"));
 		//System.out.println("recordStore :"+DataStore1.ONE.recordStore);
 		
+		//start user interface screen
+		UserInterface ui = new UserInterface();
 		
 	}
 
