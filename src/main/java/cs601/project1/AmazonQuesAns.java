@@ -59,6 +59,10 @@ public class AmazonQuesAns extends AmazonObject {
 		return asin;
 	}
 	
+	public String getRecordId() {
+		return recordId;
+	}
+	
 	
 	
 	public String toString()	{
@@ -77,7 +81,11 @@ public class AmazonQuesAns extends AmazonObject {
 		//return this.reviewerID+" "+
 		//		this.asin+" "+
 		//		this.reviewername+" "+ 
-		return		this.question.replaceAll(",", " ") + this.answer.replaceAll(",", " ");
+		//"[^A-Za-z0-9\']", " ").toLowerCase();
+		StringBuilder forWordDataStore = new StringBuilder();
+		forWordDataStore.append(this.question);
+		forWordDataStore.append(this.answer);
+		return	forWordDataStore.toString().replaceAll("[^A-Za-z0-9\']", " ").toLowerCase();
 	}
 	
 	

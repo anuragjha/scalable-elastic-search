@@ -3,7 +3,8 @@
  */
 package cs601.project1;
 
-import java.util.HashMap;
+import java.util.Comparator;
+import java.util.TreeMap;
 
 /**
  * @author anuragjha
@@ -12,7 +13,7 @@ import java.util.HashMap;
 
 //https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html
 //https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html#comparator--
-public class AmazonWords {
+public class AmazonWords1 {
 
 	//objects of Amazonwords are to be value of hashmap<word, AmazonWord object>
 	//and AmazonWord can hold the details of recId and count - a list of it - a sorted list ***
@@ -26,20 +27,20 @@ public class AmazonWords {
 	//private Hashmap 
 	//private HashMap<recordId, wordFreq> invertedIndexValues;
 	//sorted HashMap ??
-	private HashMap<String, Integer> invertedIndexValues;
+	private TreeMap<String, Integer> invertedIndexValues;
 	//private HashMap<word, invertedIndexValues>
 	
-	public AmazonWords(String word)	{  //new word in wordDataStore
+	public AmazonWords1(String word)	{  //new word in wordDataStore
 		super();
 		this.word = word;
 	}
 	
-	public AmazonWords(String word, String recordId)	{  //new word in wordDataStore
+	public AmazonWords1(String word, String recordId)	{  //new word in wordDataStore
 		super();
 		this.word = word;
 		//this.recordId = recordId;
 		//this.wordFreq = 1;/				//recId, count//
-		this.invertedIndexValues = new HashMap<String, Integer>();
+		this.invertedIndexValues = new TreeMap<String, Integer>(new ComparingFreq());
 		//add // !!! sorting 
 		invertedIndexValues.put(recordId, 1);
 	}
@@ -65,7 +66,7 @@ public class AmazonWords {
 	/**
 	 * @return the invertedIndexValues
 	 */
-	public HashMap<String, Integer> getInvertedIndexValues() {
+	public TreeMap<String, Integer> getInvertedIndexValues() {
 		return invertedIndexValues;
 	}
 	
@@ -87,6 +88,28 @@ public class AmazonWords {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	
+	class ComparingFreq implements Comparator<String>	{
+		
+		public int compare(String recId1, String recId2)	{ 
+			if(invertedIndexValues.size() >= 2)	{     // handling null pointer exception
+				int freq1 = invertedIndexValues.get(recId1) ;
+				int freq2 = invertedIndexValues.get(recId2);
+				if(freq2 > freq1)	{
+					return 1;
+				} else if(freq2 < freq1)	{
+					return -1;
+				}	else	{
+					return 1;
+				}
+			}
+			return 0;
+		
+		}
+		
+		
 	}
 
 

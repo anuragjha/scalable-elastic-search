@@ -89,8 +89,9 @@ public class AmazonReviews extends AmazonObject {
 	public String getWords()	{
 		//return this.reviewerID+" "+
 		//		this.asin+" "+
-		//		this.reviewername+" "+ 
-		return		this.reviewText.replaceAll(",", "");
+		//		this.reviewerName+" "+ 
+		return	this.reviewText.replaceAll("[^A-Za-z0-9\']", " ").toLowerCase();  
+		// !!! change this to also remove fullStop
 	}
 
 

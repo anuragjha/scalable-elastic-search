@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -41,8 +42,8 @@ public class AmazonJsonHandler {
 			while((line = reader.readLine()) != null)	{
 				try {
 
-					JsonElement element = parser.parse(line);
-					JsonObject object = element.getAsJsonObject();
+					//JsonElement element = parser.parse(line);
+					JsonObject object =  parser.parse(line).getAsJsonObject();
 					this.jsonRecordSorter(object);
 
 				} catch(JsonSyntaxException jse)	{
@@ -118,7 +119,10 @@ public class AmazonJsonHandler {
 				overall, summary, unixReviewTime, reviewTime);
 		
 	}
-
+	///private void readReviewsData(JsonObject object) {
+		
+		
+	///}
 
 	
 
@@ -168,15 +172,19 @@ public class AmazonJsonHandler {
 		AmazonJsonHandler jr = new AmazonJsonHandler();
 		jr.jsonFileReader("reviews_Cell_Phones_and_Accessories_5.json");
 		//jr.jsonFileReader("reviews_Cell_Phones_and_Accessories_5_sample.json");
-		//jr.jsonFileReader("qa_Cell_Phones_and_Accessories_sample.json");
+		//AmazonJsonHandler jr1 = new AmazonJsonHandler();
+		//jr1.jsonFileReader("qa_Cell_Phones_and_Accessories_sample.json");
 		jr.jsonFileReader("qa_Cell_Phones_and_Accessories.json");
-		System.out.println("Json file read successfully");
-		//System.out.println("ReviewAsinDataStore: " + 
-		//		AmazonDataStore.ONE.reviewAsinDataStore.keySet());
+		System.out.println("Json file read and DataStore built successfully");
+
 		System.out.println("Finding something ReviewAsinDataStore: " + 
 				AmazonDataStore.ONE.reviewAsinDataStore.get("6073894996"));
+		System.out.println("Finding something ReviewWordDataStore: " + 
+						AmazonDataStore.ONE.reviewWordDataStore.get("an").getInvertedIndexValues());
 		System.out.println("Finding something quesAnsAsinDataStore: " + 
 				AmazonDataStore.ONE.quesAnsAsinDataStore.get("6073894996"));
+		System.out.println("Finding something QuesAnsWordDataStore: " + 
+			AmazonDataStore.ONE.quesAnsWordDataStore.get("at").getInvertedIndexValues());
 		
 		
 	}

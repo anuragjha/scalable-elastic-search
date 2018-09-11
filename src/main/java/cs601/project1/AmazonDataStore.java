@@ -30,8 +30,8 @@ public enum AmazonDataStore {
 	
 	//LinkedList quesAnsWordDataStore = new LinkedList();
 	//HashMap<word, list of recid-count>
-	HashMap<String, LinkedList<AmazonWords>> quesAnsWordDataStore = 
-			new HashMap<String, LinkedList<AmazonWords>>();
+	HashMap<String, AmazonWords> quesAnsWordDataStore = 
+			new HashMap<String, AmazonWords>();
 
 	/**
 	 *  is called by each Amazon record to notify data store 
@@ -57,6 +57,7 @@ public enum AmazonDataStore {
 			// create/update 2 data store for QuesAns
 			updateQuesAnsAsinDataStore((AmazonQuesAns)newRecord);
 			////updateQuesAnsWordDataStore();
+			updateQuesAnsWordDataStore((AmazonQuesAns)newRecord);
 		}
 	}
 	
@@ -114,24 +115,23 @@ public enum AmazonDataStore {
 	 */
 	private void updateReviewWordDataStore(AmazonReviews newReviewRecord)	{
 		String[] words = newReviewRecord.getWords().split(" "); //spliting words in record to array
+		//System.out.println("words in this review");
 		for(String word : words)	{
-			if(AmazonDataStore.ONE.quesAnsWordDataStore.containsKey(word))	{
-				//word already present in data store
-				//LinkedList<AmazonWord> amazonWords = 
-				//		AmazonDataStore.ONE.reviewAsinDataStore.get(word);
-				//amazonWords.add(newReviewRecord.)
-				
+			//System.out.println("word : "+ word);
+			if(AmazonDataStore.ONE.reviewWordDataStore.containsKey(word))	{
 				//conditions to check if recordId is already present or do we have to create new entry
 				//for this recordId
+				//System.out.println("inside if");
 				AmazonWords thisAmazonWord = 
 						AmazonDataStore.ONE.reviewWordDataStore.get(word);
 				boolean recordIdCheck = 
 						thisAmazonWord.getInvertedIndexValues().containsKey(newReviewRecord.getRecordId());
 				if(recordIdCheck)	{ //word has this recordId already - so just increment the count
-					thisAmazonWord.getInvertedIndexValues().put(key, 1)
+					thisAmazonWord.getInvertedIndexValues().put(newReviewRecord.getRecordId(), 
+							(thisAmazonWord.getInvertedIndexValues().get(newReviewRecord.getRecordId()) + 1) );
 				}
 				else	{ //word does not have this recordId - so add the recordId in invertedIndexValues
-					
+					thisAmazonWord.getInvertedIndexValues().put(newReviewRecord.getRecordId(), 1);
 				}
 				
 			}
@@ -145,6 +145,48 @@ public enum AmazonDataStore {
 		}
 	
 	}
+	
+	
+	
+	//QuesAns
+	/**
+	 * updateReviewWordDataStore method updates Word datastore for AmazonReviews
+	 * @param newReviewRecord
+	 */
+	private void updateQuesAnsWordDataStore(AmazonQuesAns newQuesAnsRecord)	{
+		String[] words = newQuesAnsRecord.getWords().split(" "); //spliting words in record to array
+		//System.out.println("words in this review");
+		for(String word : words)	{
+			//System.out.println("word : "+ word);
+			if(AmazonDataStore.ONE.quesAnsWordDataStore.containsKey(word))	{
+				//conditions to check if recordId is already present or do we have to create new entry
+				//for this recordId
+				//System.out.println("inside if");
+				AmazonWords thisAmazonWord = 
+						AmazonDataStore.ONE.quesAnsWordDataStore.get(word);
+				boolean recordIdCheck = 
+						thisAmazonWord.getInvertedIndexValues().containsKey(newQuesAnsRecord.getRecordId());
+				if(recordIdCheck)	{ //word has this recordId already - so just increment the count
+					thisAmazonWord.getInvertedIndexValues().put(newQuesAnsRecord.getRecordId(), 
+							(thisAmazonWord.getInvertedIndexValues().get(newQuesAnsRecord.getRecordId()) + 1) );
+				}
+				else	{ //word does not have this recordId - so add the recordId in invertedIndexValues
+					thisAmazonWord.getInvertedIndexValues().put(newQuesAnsRecord.getRecordId(), 1);
+				}
+				
+			}
+			else	{
+				// new word for data store
+				AmazonWords thisAmazonWord = 
+						new AmazonWords(word, newQuesAnsRecord.getRecordId());
+				//LinkedList<AmazonWords> amazonWord = new LinkedList<AmazonWords>();
+				//amazonWord.add(thisAmazonWord); // adding AmazonWord in the list
+				AmazonDataStore.ONE.quesAnsWordDataStore.put(word, thisAmazonWord);
+			}
+		}
+	
+	}
+
 	
 	
 
