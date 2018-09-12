@@ -16,23 +16,36 @@ public enum AmazonDataStore {
 	ONE;
 
 	// key - asin, value - AmazonObject
+	/* old
 	HashMap<String, LinkedList<AmazonReviews>> reviewAsinDataStore = 
 			new HashMap<String, LinkedList<AmazonReviews>>();
+	*/
+	// key - String, value - String ,  String
+	//       asin            recordId, 
+	InvertedIndex reviewAsinDataStore = new InvertedIndex();
+	
 	
 	HashMap<String, LinkedList<AmazonQuesAns>> quesAnsAsinDataStore = 
 			new HashMap<String, LinkedList<AmazonQuesAns>>();
 
-	//LinkedList amazonObjectList = new LinkedList();
+
 	// key - word, value - list of AmazonWords (Sorted by word frequency)
+	/* old
 	HashMap<String, AmazonWords> reviewWordDataStore = 
-			new HashMap<String, AmazonWords>();
+			new HashMap<String, AmazonWords>(); 
+	*/
 	//**// - every object of amazonword will have "word" as LHS of =
+	//creating from generic instance
+	InvertedIndex reviewWordDataStore = new InvertedIndex();
 	
 	//LinkedList quesAnsWordDataStore = new LinkedList();
 	//HashMap<word, list of recid-count>
+	/* old
 	HashMap<String, AmazonWords> quesAnsWordDataStore = 
 			new HashMap<String, AmazonWords>();
-
+	*/
+	InvertedIndex quesAnsWordDataStore = new InvertedIndex();
+	
 	/**
 	 *  is called by each Amazon record to notify data store 
 	 * @param newRecord
@@ -56,7 +69,6 @@ public enum AmazonDataStore {
 		else if(newRecord instanceof AmazonQuesAns)	{
 			// create/update 2 data store for QuesAns
 			updateQuesAnsAsinDataStore((AmazonQuesAns)newRecord);
-			////updateQuesAnsWordDataStore();
 			updateQuesAnsWordDataStore((AmazonQuesAns)newRecord);
 		}
 	}
@@ -68,6 +80,9 @@ public enum AmazonDataStore {
 	 * @param newReviewRecord
 	 */
 	private void updateReviewAsinDataStore(AmazonReviews newReviewRecord)	{
+		
+		
+		/* old
 		if(AmazonDataStore.ONE.reviewAsinDataStore.containsKey(newReviewRecord.getAsin()))	{
 			//means asin is already in datastore	
 			LinkedList<AmazonReviews> amazonRecords = 
@@ -81,6 +96,7 @@ public enum AmazonDataStore {
 			amazonRecords.add(newReviewRecord);  //adding Review record in new LinkedList
 			AmazonDataStore.ONE.reviewAsinDataStore.put(newReviewRecord.getAsin(), amazonRecords);
 		}
+		*/
 	}
 	
 	
@@ -114,9 +130,17 @@ public enum AmazonDataStore {
 	 * @param newReviewRecord
 	 */
 	private void updateReviewWordDataStore(AmazonReviews newReviewRecord)	{
+		
+		//** stmts for the new index **//
+		reviewWordDataStore.getTextString(newReviewRecord.getStringText(), newReviewRecord.getRecordId());
+		
+		//**        **//
+		/* old
 		String[] words = newReviewRecord.getWords().split(" "); //spliting words in record to array
 		//System.out.println("words in this review");
 		for(String word : words)	{
+			///****/// putting logic to transform word here
+		/*	word = word.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 			//System.out.println("word : "+ word);
 			if(AmazonDataStore.ONE.reviewWordDataStore.containsKey(word))	{
 				//conditions to check if recordId is already present or do we have to create new entry
@@ -137,13 +161,13 @@ public enum AmazonDataStore {
 			}
 			else	{
 				// new word for data store
-				AmazonWords thisAmazonWord = new AmazonWords(word, newReviewRecord.getRecordId());
+				AmazonWords thisAmazonWord = new AmazonWords(newReviewRecord.getRecordId());
 				//LinkedList<AmazonWords> amazonWord = new LinkedList<AmazonWords>();
 				//amazonWord.add(thisAmazonWord); // adding AmazonWord in the list
 				AmazonDataStore.ONE.reviewWordDataStore.put(word, thisAmazonWord);
 			}
 		}
-	
+	*/
 	}
 	
 	
@@ -154,9 +178,17 @@ public enum AmazonDataStore {
 	 * @param newReviewRecord
 	 */
 	private void updateQuesAnsWordDataStore(AmazonQuesAns newQuesAnsRecord)	{
+		
+		String[] words = newQuesAnsRecord.getWords().split(" ");
+		for(String word : words)	{
+		quesAnsWordDataStore.add(word, newQuesAnsRecord.getRecordId());
+		}
+		/* old
 		String[] words = newQuesAnsRecord.getWords().split(" "); //spliting words in record to array
 		//System.out.println("words in this review");
 		for(String word : words)	{
+			///****/// putting logic to transform word here
+		/*	word = word.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 			//System.out.println("word : "+ word);
 			if(AmazonDataStore.ONE.quesAnsWordDataStore.containsKey(word))	{
 				//conditions to check if recordId is already present or do we have to create new entry
@@ -178,13 +210,13 @@ public enum AmazonDataStore {
 			else	{
 				// new word for data store
 				AmazonWords thisAmazonWord = 
-						new AmazonWords(word, newQuesAnsRecord.getRecordId());
+						new AmazonWords(newQuesAnsRecord.getRecordId());
 				//LinkedList<AmazonWords> amazonWord = new LinkedList<AmazonWords>();
 				//amazonWord.add(thisAmazonWord); // adding AmazonWord in the list
 				AmazonDataStore.ONE.quesAnsWordDataStore.put(word, thisAmazonWord);
 			}
 		}
-	
+	*/
 	}
 
 	

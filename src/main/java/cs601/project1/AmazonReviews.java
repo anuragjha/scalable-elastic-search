@@ -16,17 +16,17 @@ public class AmazonReviews extends AmazonObject {
 	private static int recordCounter = 0;    //class variable recordCounter initializing 
 	private String recordId;			// instance variable for each record
 	//data fields for Review record type
-	private String reviewerID;
+	////private String reviewerID;
 	private String asin;
-	private String reviewerName;
-	private int[] helpful; // array of 2 ints -  int[2]
+	////private String reviewerName;
+	////private int[] helpful; // array of 2 ints -  int[2]
 	private String reviewText;
-	private double overall;
-	private String summary;
-	private String unixReviewTime; // will have to find correct datatype
-	private String reviewTime; //will have to find correct datatype
+	////private double overall;
+	////private String summary;
+	////private long unixReviewTime; // will have to find correct datatype
+	////private String reviewTime; //will have to find correct datatype
 	
-	
+
 	
 	/**
 	 *  constructor method
@@ -40,26 +40,11 @@ public class AmazonReviews extends AmazonObject {
 	 * @param unixReviewTime
 	 * @param reviewTime
 	 */
-	public AmazonReviews(String reviewerID, String asin, String reviewerName, int[] helpful,
-			String reviewText, double overall, String summary, String unixReviewTime, String reviewTime) {
-		super();
-		AmazonReviews.recordCounter += 1;
-		this.recordId = AmazonReviews.recordType + AmazonReviews.recordCounter;
-		this.reviewerID = reviewerID;
-		this.asin = asin;
-		this.reviewerName = reviewerName;
-		this.helpful = helpful;
-		this.reviewText = reviewText;
-		this.overall = overall;
-		this.summary = summary;
-		this.unixReviewTime = unixReviewTime;
-		this.reviewTime = reviewTime;
-		
-		// initialization complete - now notify DataStore
-		//System.out.println(this.toString());
-		AmazonDataStore.ONE.newRecord(this);
-	}
 
+	public AmazonReviews()	{
+
+	}
+	
 	//getters
 	public String getAsin() {
 		return this.asin;
@@ -69,16 +54,24 @@ public class AmazonReviews extends AmazonObject {
 		return this.recordId;
 	}
 	
+	//increment counter
+	private void incrementCounter()	{
+		AmazonReviews.recordCounter += 1;
+		this.recordId = AmazonReviews.recordType + AmazonReviews.recordCounter;
+	}
+	
+	//notify DataStore
+	public void notifyDataStore()	{
+		this.incrementCounter();
+		AmazonDataStore.ONE.newRecord(this);
+	}
 	
 
 	/**
 	 * overriding toString method
 	 */
 	public String toString()	{
-		return this.recordId + " " + this.reviewerID + " " + this.asin + " " + 
-				this.reviewerName + " " + this.helpful + " " + this.reviewText + " " + 
-				this.overall + " " + this.summary + " " + this.unixReviewTime + " " + 
-				this.reviewTime;
+		return "\n\n" + this.recordId + "\n" +  this.asin + "\n" + this.reviewText ;
 	}
 	
 	
@@ -87,11 +80,13 @@ public class AmazonReviews extends AmazonObject {
 	 * @return
 	 */
 	public String getWords()	{
-		//return this.reviewerID+" "+
-		//		this.asin+" "+
-		//		this.reviewerName+" "+ 
-		return	this.reviewText.replaceAll("[^A-Za-z0-9\']", " ").toLowerCase();  
-		// !!! change this to also remove fullStop
+		//return	this.reviewText.replaceAll("[^A-Za-z0-9]", " ").toLowerCase();  
+		return this.reviewText;
+	}
+	
+	public String getStringText()	{
+		//return	this.reviewText.replaceAll("[^A-Za-z0-9]", " ").toLowerCase();  
+		return this.reviewText;
 	}
 
 

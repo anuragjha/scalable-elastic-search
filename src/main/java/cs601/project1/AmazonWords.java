@@ -7,38 +7,26 @@ import java.util.HashMap;
 
 /**
  * @author anuragjha
- *
+ *  AmazonWords class keeps a hashmap of reciID and count for a particular word
  */
 
-//https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html
-//https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html#comparator--
 public class AmazonWords {
-
-	//objects of Amazonwords are to be value of hashmap<word, AmazonWord object>
-	//and AmazonWord can hold the details of recId and count - a list of it - a sorted list ***
-	//AmazonWords holds data to document and word frequency 
-	//so it will have a vraiable  = word  enum ?
-	//anycase another variable is pair of recid,count
-	private final String word;   //inverted index key
-	
-	//private String recordId;
-	//private int wordFreq;
-	//private Hashmap 
-	//private HashMap<recordId, wordFreq> invertedIndexValues;
-	//sorted HashMap ??
+	//private HashMap<word, invertedIndexValues> --- implementing invertedIndexValues
+	//private final String word;
 	private HashMap<String, Integer> invertedIndexValues;
-	//private HashMap<word, invertedIndexValues>
 	
-	public AmazonWords(String word)	{  //new word in wordDataStore
+	
+	public AmazonWords()	{  //new word in wordDataStore
 		super();
-		this.word = word;
+		///********this.word = word;
+		//wordFreq = 1;/				//recId, count//
+		this.invertedIndexValues = new HashMap<String, Integer>();
 	}
 	
-	public AmazonWords(String word, String recordId)	{  //new word in wordDataStore
+	public AmazonWords(String recordId)	{  //new word in wordDataStore
 		super();
-		this.word = word;
-		//this.recordId = recordId;
-		//this.wordFreq = 1;/				//recId, count//
+		///********this.word = word;
+		//wordFreq = 1;/				//recId, count//
 		this.invertedIndexValues = new HashMap<String, Integer>();
 		//add // !!! sorting 
 		invertedIndexValues.put(recordId, 1);
@@ -76,7 +64,7 @@ public class AmazonWords {
 	
 	
 	
-	//so best map for holding sorted data ? - implement sortable hashmap
+	//so best map for holding sorted data ? - implement sortable hashmap - treemap ///
 	//entending comparable
 	
 
