@@ -59,9 +59,6 @@ public class InvertedIndex implements Comparator<Map.Entry<String,Integer>>  {
 				this.invertedIndex.get(word).put(recordId, currentFreq);
 			}
 			else	{  //recordId is not present/// but word is present
-				//HashMap<String, Integer> invertedIndexValues = this.invertedIndex.get(word);
-				//		new HashMap<String, Integer>();	
-				//invertedIndexValues.put(recordId, 1);
 				this.invertedIndex.get(word).put(recordId, 1);
 			}
 		}

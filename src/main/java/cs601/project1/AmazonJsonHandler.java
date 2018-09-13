@@ -62,12 +62,12 @@ public class AmazonJsonHandler {
 					if(inputFileType.matches("review"))	{
 						//this.readReviewsData(object);
 						AmazonReviews thisAmazonrReview = new Gson().fromJson(object, AmazonReviews.class);
-						thisAmazonrReview.notifyDataStore();
+						thisAmazonrReview.notifyDataStore(); // notifying DataStore
 					}
 					else if(inputFileType.matches("qa"))	{
 						//this.readQuesAnsData(object);
 						AmazonQuesAns thisAmazonrQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
-						thisAmazonrQuesAns.notifyDataStore();
+						thisAmazonrQuesAns.notifyDataStore(); // notifying DataStore
 					}
 					else	{
 						System.out.println("File type not recognised");

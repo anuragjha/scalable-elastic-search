@@ -28,7 +28,7 @@ public enum AmazonDataStore {
 
 	ONE;
 
-	// key - asin, value - AmazonObject
+	// key - recId, value - AmazonObject
 
 	//---converting dataset to hashset
 	//HashMap<String, LinkedList<AmazonReviews>> reviewAsinDataStore = 
