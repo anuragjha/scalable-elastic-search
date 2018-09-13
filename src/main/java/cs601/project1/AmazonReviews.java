@@ -16,12 +16,12 @@ public class AmazonReviews extends AmazonObject {
 	private static int recordCounter = 0;    //class variable recordCounter initializing 
 	private String recordId;			// instance variable for each record
 	//data fields for Review record type
-	////private String reviewerID;
+	private String reviewerID;
 	private String asin;
 	////private String reviewerName;
 	////private int[] helpful; // array of 2 ints -  int[2]
 	private String reviewText;
-	////private double overall;
+	private double overall;
 	////private String summary;
 	////private long unixReviewTime; // will have to find correct datatype
 	////private String reviewTime; //will have to find correct datatype
@@ -71,7 +71,8 @@ public class AmazonReviews extends AmazonObject {
 	 * overriding toString method
 	 */
 	public String toString()	{
-		return "\n\n" + this.recordId + "\n" +  this.asin + "\n" + this.reviewText ;
+		return "\n\n" + this.recordId + "\n" + this.reviewerID + "\n" +this.asin +
+				"\n" + this.overall + "\n" + this.reviewText ;
 	}
 	
 	
@@ -79,10 +80,10 @@ public class AmazonReviews extends AmazonObject {
 	 * 
 	 * @return
 	 */
-	public String getWords()	{
+	//public String getWords()	{
 		//return	this.reviewText.replaceAll("[^A-Za-z0-9]", " ").toLowerCase();  
-		return this.reviewText;
-	}
+//		return this.reviewText;
+//	}
 	
 	public String getStringText()	{
 		//return	this.reviewText.replaceAll("[^A-Za-z0-9]", " ").toLowerCase();  

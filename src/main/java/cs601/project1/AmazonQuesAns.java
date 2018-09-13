@@ -19,7 +19,7 @@ public class AmazonQuesAns extends AmazonObject {
 	////private String questionType;
 	private String asin;
 	////private String answerTime; // have to find correct datatype
-	////private long unixTime; //have to find correct datatype
+	////private long unixTime; 
 	private String question;
 	////private String answerType; //in record when question type is Yes/No
 	private String answer;
@@ -74,12 +74,9 @@ public class AmazonQuesAns extends AmazonObject {
 	 * 
 	 * @return
 	 */
-	public String getWords()	{
-		//String forWordDataStore = new String(this.question+this.answer);
-		///return	forWordDataStore.toString().replaceAll("[^A-Za-z0-9\']", " ").toLowerCase();
+	public String getTextString()	{
 		return (this.question+this.answer);
 	}
-	
 	
 
 	
