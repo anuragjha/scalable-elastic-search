@@ -3,11 +3,13 @@
  */
 package cs601.project1;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * @author anuragjha
@@ -22,36 +24,38 @@ import java.util.Map.Entry;
  * ===>> convert linkedhashmap to hashmap to get values - coz get() is order of 1
  * 
  */
-public class InvertedIndex implements Comparator<Map.Entry<String,Integer>>  {
+public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 	//+++++++// checking for comparator
-	//private HashMap<String, Integer> invertedIndexValues = new HashMap<String, Integer>() ;
-	private HashMap<String, HashMap<String,Integer>> invertedIndex;
-	//private HashMap<String, Integer> invertedIndexValues;
+
+	private HashMap<String, LinkedHashMap<Integer,Integer>> invertedIndex;
 
 	public InvertedIndex()	{
-		this.invertedIndex = new HashMap<String, HashMap<String,Integer>>();
+		this.invertedIndex = new HashMap<String, LinkedHashMap<Integer,Integer>>();
 	}
 
 
 	/**
 	 * @return the invertedIndex
 	 */
-	public HashMap<String, HashMap<String, Integer>> getIndex() {
+	public HashMap<String, LinkedHashMap<Integer, Integer>> getIndex() {
 		return invertedIndex;
 	}
 
 
-
-
-	public void getTextString(String newString, String recordId)	{
+	public void getTextString(String newString, int recordId)	{
 		String[] newWordStringArray = newString.split(" ");
 		for(String word : newWordStringArray)	{
-			if(word != null && word != "" )
-				add(word.replaceAll("[^A-Za-z0-9]", "").toLowerCase(), recordId);
+			if((word != null) && (word != ""))	{
+				String newWord = word.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+				if(newWord.length() > 0)	{
+					//System.out.println("word:"+newWord);
+					add(newWord, recordId);
+				}
+			}
 		}
 	}
 
-	private void add(String word, String recordId)	{
+	private void add(String word, int recordId)	{
 		if(this.invertedIndex.containsKey(word))	{ // key - word is already present
 			if(this.invertedIndex.get(word).containsKey(recordId))	{ //recordId is already present
 				int currentFreq = this.invertedIndex.get(word).get(recordId);
@@ -63,13 +67,20 @@ public class InvertedIndex implements Comparator<Map.Entry<String,Integer>>  {
 			}
 		}
 		else	{   // key - word is not present 
-			HashMap<String, Integer> invertedIndexValues = new HashMap<String, Integer>();	
+			LinkedHashMap<Integer, Integer> invertedIndexValues = new LinkedHashMap<Integer, Integer>();	
 			invertedIndexValues.put(recordId, 1);
 			this.invertedIndex.put(word, invertedIndexValues);
 		}
 	}
 
 
+	public Set<Integer> searchWord(String word)	{
+		//StringBuilder output = new StringBuilder();
+		//for(int recordId : this.invertedIndex.get(word).keySet())	{
+		//	output.append(AmazonDataStore.ONE.)
+		//}
+		return this.invertedIndex.get(word).keySet();
+	}
 
 
 	/**
@@ -78,11 +89,11 @@ public class InvertedIndex implements Comparator<Map.Entry<String,Integer>>  {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		InvertedIndex ir = new InvertedIndex();
-		ir.getTextString("This Text is new .. whaat ??", "rv1");
-		ir.getTextString("this te'xt was new .. what ??", "rv2");
-		ir.getTextString("Th-is Text was old .. whaat ??", "rv3");
-		ir.getTextString("This Text is old .. whaat ??", "rv4");
-		ir.getTextString("This This is n:ew .. whaat ??", "rv5");
+		//ir.getTextString("This Text is new .. whaat ??", 1);
+		//ir.getTextString("this te'xt was new .. what ??", 2);
+		//ir.getTextString("Th-is Text was old .. whaat ??", 3);
+		//ir.getTextString("This Text is old .. whaat ??", 4);
+		//ir.getTextString("This This is n:ew .. whaat ??", 5);
 
 		System.out.println("InvertedIndex: " + ir.getIndex().toString() );
 
@@ -93,7 +104,7 @@ public class InvertedIndex implements Comparator<Map.Entry<String,Integer>>  {
 	 * 	/**/
 	// declaration from eclipse
 	@Override
-	public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+	public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
 
 		return o2.getValue() - (o1.getValue());
 

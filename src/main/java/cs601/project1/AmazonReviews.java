@@ -11,10 +11,12 @@ package cs601.project1;
 public class AmazonReviews extends AmazonObject {
 	
 	//record type
-	private static final String recordType = "rv";
+	
+	//changing recordId to integer !!
+	//private static final String recordType = "rv";
 	//class variable - counter
 	private static int recordCounter = 0;    //class variable recordCounter initializing 
-	private String recordId;			// instance variable for each record
+	private int recordId;			// instance variable for each record
 	//data fields for Review record type
 	private String reviewerID;
 	private String asin;
@@ -25,22 +27,8 @@ public class AmazonReviews extends AmazonObject {
 	////private String summary;
 	////private long unixReviewTime; // will have to find correct datatype
 	////private String reviewTime; //will have to find correct datatype
-	
 
-	
-	/**
-	 *  constructor method
-	 * @param reviewerID
-	 * @param asin
-	 * @param reviewerName
-	 * @param helpful
-	 * @param reviewText
-	 * @param overall
-	 * @param summary
-	 * @param unixReviewTime
-	 * @param reviewTime
-	 */
-
+	//constructore for Gson
 	public AmazonReviews()	{
 
 	}
@@ -50,14 +38,14 @@ public class AmazonReviews extends AmazonObject {
 		return this.asin;
 	}
 	
-	public String getRecordId()	{
+	public int getRecordId()	{
 		return this.recordId;
 	}
 	
 	//increment counter
 	private void incrementCounter()	{
 		AmazonReviews.recordCounter += 1;
-		this.recordId = AmazonReviews.recordType + AmazonReviews.recordCounter;
+		this.recordId = AmazonReviews.recordCounter;
 	}
 	
 	//notify DataStore
@@ -75,15 +63,6 @@ public class AmazonReviews extends AmazonObject {
 				"\n" + this.overall + "\n" + this.reviewText ;
 	}
 	
-	
-	/**
-	 * 
-	 * @return
-	 */
-	//public String getWords()	{
-		//return	this.reviewText.replaceAll("[^A-Za-z0-9]", " ").toLowerCase();  
-//		return this.reviewText;
-//	}
 	
 	public String getStringText()	{
 		//return	this.reviewText.replaceAll("[^A-Za-z0-9]", " ").toLowerCase();  

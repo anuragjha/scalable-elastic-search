@@ -45,7 +45,7 @@ public class AmazonJsonHandler {
 	 * @param inputFile
 	 */
 	private void jsonFileReader(String inputFile, String inputFileType)	{
-
+		
 		JsonParser parser = new JsonParser();
 		Path path = Paths.get(inputFile);
 
@@ -60,29 +60,23 @@ public class AmazonJsonHandler {
 					JsonObject object =  parser.parse(line).getAsJsonObject();
 					
 					if(inputFileType.matches("review"))	{
-						//this.readReviewsData(object);
-						AmazonReviews thisAmazonrReview = new Gson().fromJson(object, AmazonReviews.class);
-						thisAmazonrReview.notifyDataStore(); // notifying DataStore
+						readReviewsData(object);
 					}
 					else if(inputFileType.matches("qa"))	{
-						//this.readQuesAnsData(object);
-						AmazonQuesAns thisAmazonrQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
-						thisAmazonrQuesAns.notifyDataStore(); // notifying DataStore
+						readQuesAnsData(object);
 					}
 					else	{
 						System.out.println("File type not recognised");
 					}
-					
-
 				} catch(JsonSyntaxException jse)	{
 					System.out.println("Skipping line ...");
 				}
-
-			}			
+			}	
+			
 		} catch(IOException ioe)	{
 			System.out.println("IO exception:\n"+ioe.getStackTrace());
 		}
-
+		
 	}
 
 
@@ -91,11 +85,11 @@ public class AmazonJsonHandler {
 	 * readReviewsData method takes the Json object and creates the Review Object
 	 * @param object
 	 */
-//	private void readReviewsData(JsonObject object) {
-//		//https://github.com/google/gson/blob/master/UserGuide
-//		AmazonReviews thisAmazonrReview = new Gson().fromJson(object, AmazonReviews.class);
-//		thisAmazonrReview.notifyDataStore();
-//	}
+	private void readReviewsData(JsonObject object) {
+		//https://github.com/google/gson/blob/master/UserGuide
+		AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
+		thisAmazonReview.notifyDataStore();
+	}
 
 
 
@@ -103,10 +97,10 @@ public class AmazonJsonHandler {
 	 * readQuesAnsData takes the Json object and creates the QuesAns Object
 	 * @param object
 	 */
-//	private void readQuesAnsData(JsonObject object) {
-//		AmazonQuesAns thisAmazonrQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
-//		thisAmazonrQuesAns.notifyDataStore();
-//	}
+	private void readQuesAnsData(JsonObject object) {
+		AmazonQuesAns thisAmazonQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
+		thisAmazonQuesAns.notifyDataStore();
+	}
 
 
 	/**

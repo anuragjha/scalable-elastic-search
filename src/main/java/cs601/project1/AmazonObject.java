@@ -9,6 +9,12 @@ package cs601.project1;
  */
 public abstract class AmazonObject {
 
+	
+	
+	abstract String getStringText();
+	
+	abstract int getRecordId();
+	
 	/**
 	 * @param args
 	 */

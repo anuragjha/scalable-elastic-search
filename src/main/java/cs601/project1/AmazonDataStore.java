@@ -3,7 +3,8 @@
  */
 package cs601.project1;
 
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * @author anuragjha
@@ -18,124 +19,112 @@ import java.util.LinkedList;
  * -- changing hashmap to linkedHashMap
  * =====> will have to implement sorting at insertion
  * 
- * 
- * 
- * 
- * 
- * 
  */
 public enum AmazonDataStore {
 
 	ONE;
 
+	
+
+	//private boolean isRecordDataStoreBuilt = false;
 	// key - recId, value - AmazonObject
-
-	//---converting dataset to hashset
-	//HashMap<String, LinkedList<AmazonReviews>> reviewAsinDataStore = 
-	//		new HashMap<String, LinkedList<AmazonReviews>>();
-	LinkedList<AmazonReviews> reviewDataStore = new LinkedList<AmazonReviews>();
-
-
-
-	//HashMap<String, LinkedList<AmazonQuesAns>> quesAnsAsinDataStore = 
-	//		new HashMap<String, LinkedList<AmazonQuesAns>>();
-	LinkedList<AmazonQuesAns> quesAnsDataStore = new LinkedList<AmazonQuesAns>();
+	HashMap<Integer, AmazonReviews> reviewDataStore = new HashMap<Integer, AmazonReviews>();
+	HashMap<Integer, AmazonQuesAns> quesAnsDataStore = new HashMap<Integer, AmazonQuesAns>();
 
 
 	// key - word, value - list of AmazonWords (Sorted by word frequency)
-	/* old
-	HashMap<String, AmazonWords> reviewWordDataStore = 
-			new HashMap<String, AmazonWords>(); 
-	 */
-	//**// - every object of amazonword will have "word" as LHS of =
-	//creating from generic instance
 	InvertedIndex reviewWordDataStore = new InvertedIndex();
-
-	//LinkedList quesAnsWordDataStore = new LinkedList();
-	//HashMap<word, list of recid-count>
-	/* old
-	HashMap<String, AmazonWords> quesAnsWordDataStore = 
-			new HashMap<String, AmazonWords>();
-	 */
 	InvertedIndex quesAnsWordDataStore = new InvertedIndex();
 
 	/**
-	 *  is called by each Amazon record to notify data store 
+	 * This method is called via notifydatastore method of AmazonReviews object
 	 * @param newRecord
 	 */
-	
 	public void newRecord(AmazonReviews newRecord)	{
 		processNewRecord(newRecord);
 	}
 	
-	public void newRecord(AmazonQuesAns newRecord)	{
-		processNewRecord(newRecord);
-	}
-	
-	
 	private void processNewRecord(AmazonReviews newRecord)	{
 		// create/update 2 data store for Reviews
 		updateReviewDataStore(newRecord); //cast to AmazonReviews
-		updateReviewWordDataStore(newRecord);
+		//updateReviewAsinDataStore(newRecord);
+		updateReviewWordDataStore(newRecord);  //** do this after review data store is built
 	}
 	
 	
-	private void processNewRecord(AmazonQuesAns newRecord)	{
-		// create/update 2 data store for Reviews
-		updateQuesAnsDataStore(newRecord); //cast to AmazonReviews
-		updateQuesAnsWordDataStore(newRecord);
-	}
-
 	/**
-	 * updateReviewAsinDataStore method updates Asin datastore for AmazonReviews
+	 * updateReviewDataStore method updates  datastore for AmazonReviews
 	 * @param newReviewRecord
 	 */
-	private void updateReviewDataStore(AmazonReviews newReviewRecord)	{
-		reviewDataStore.add(newReviewRecord);
+	private void updateReviewDataStore(AmazonReviews newRecord)	{
+		reviewDataStore.put(newRecord.getRecordId(), newRecord);
 	}
 
-
-
-
-	/**
-	 * updateQuesAnsAsinDataStore method updates Asin datastore for AmazonQuesAns
-	 * @param newReviewRecord
-	 */	
-
-	//*****// updating asin datastore 
-	private void updateQuesAnsDataStore(AmazonQuesAns newReviewRecord)	{
-
-		quesAnsDataStore.add(newReviewRecord);
-
-	}
-
-
-
+	
+	
 	/**
 	 * updateReviewWordDataStore method updates Word datastore for AmazonReviews
 	 * @param newReviewRecord
 	 */
 	private void updateReviewWordDataStore(AmazonReviews newReviewRecord)	{
 
-		//** stmts for the new index **//
-		reviewWordDataStore.getTextString(newReviewRecord.getStringText(), newReviewRecord.getRecordId());
+		this.reviewWordDataStore.getTextString(
+				newReviewRecord.getStringText(), newReviewRecord.getRecordId());
+	}
+	
+	
+	public void newRecord(AmazonQuesAns newRecord)	{
+		processNewRecord(newRecord);
+	}
+	
+	
+	private void processNewRecord(AmazonQuesAns newRecord)	{
+		// create/update 2 data store for Reviews
+		updateQuesAnsDataStore(newRecord); //cast to AmazonReviews
+		updateQuesAnsWordDataStore(newRecord); //** do this after quesAns data store is built
 	}
 
 
 
-	//QuesAns
+
+	/**
+	 * updateQuesAnsAsinDataStore method updates datastore for AmazonQuesAns
+	 * @param newReviewRecord
+	 */	
+	private void updateQuesAnsDataStore(AmazonQuesAns newRecord)	{
+
+		quesAnsDataStore.put(newRecord.getRecordId(), newRecord);
+
+	}
+
+	
 	/**
 	 * updateReviewWordDataStore method updates Word datastore for AmazonReviews
 	 * @param newReviewRecord
 	 */
 	private void updateQuesAnsWordDataStore(AmazonQuesAns newQuesAnsRecord)	{
-
-		quesAnsWordDataStore.getTextString(newQuesAnsRecord.getTextString(), newQuesAnsRecord.getRecordId());
 		
+		this.quesAnsWordDataStore.getTextString(
+				newQuesAnsRecord.getStringText(), newQuesAnsRecord.getRecordId());
 	}
-
-
-
+	
+	
+	//**** method to build Review Word data store
+//	public void buildRevwWordDataStore()	{
+//		Collection<AmazonReviews> records = AmazonDataStore.ONE.reviewDataStore.values();
+//		for(AmazonReviews newRecord : records)	{
+//			updateReviewWordDataStore(newRecord);
+//		}
+//	}
+	
+	
+	//**** method to build quesAns Word data store
+//	public void buildQusAnsWordDataStore()	{
+//		Collection<AmazonQuesAns> records = AmazonDataStore.ONE.quesAnsDataStore.values();
+//		for(AmazonQuesAns newRecord : records)	{
+//			updateQuesAnsWordDataStore(newRecord);
+//		}
+//	}
 
 	/**
 	 * @param args

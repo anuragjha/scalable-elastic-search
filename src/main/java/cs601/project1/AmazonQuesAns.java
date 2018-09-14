@@ -11,10 +11,10 @@ package cs601.project1;
 public class AmazonQuesAns extends AmazonObject {
 	
 	//record type
-	private static final String recordType = "qa";
+	//private static final String recordType = "qa";
 	//class variable - counter
 	private static int recordCounter = 0;    //class variable recordCounter initializing 
-	private String recordId;  	//instance variable for each record
+	private int recordId;  	//instance variable for each record
 	// data field for QuesAns type record
 	////private String questionType;
 	private String asin;
@@ -24,18 +24,7 @@ public class AmazonQuesAns extends AmazonObject {
 	////private String answerType; //in record when question type is Yes/No
 	private String answer;
 	
-	
-	
-	/**
-	 *  constructor method
-	 * @param questionType
-	 * @param asin
-	 * @param answerTime
-	 * @param unixTime
-	 * @param question
-	 * @param answerType
-	 * @param answer
-	 */
+	//constructor for Gson
 	public AmazonQuesAns()	{
 		
 	}
@@ -46,14 +35,14 @@ public class AmazonQuesAns extends AmazonObject {
 		return asin;
 	}
 	
-	public String getRecordId() {
+	public int getRecordId() {
 		return recordId;
 	}
 	
 	//increment counter
 	private void incrementCounter()	{
 		AmazonQuesAns.recordCounter += 1;
-		this.recordId = AmazonQuesAns.recordType + AmazonQuesAns.recordCounter;
+		this.recordId = AmazonQuesAns.recordCounter;
 	}
 	
 	
@@ -74,12 +63,9 @@ public class AmazonQuesAns extends AmazonObject {
 	 * 
 	 * @return
 	 */
-	public String getTextString()	{
+	public String getStringText()	{
 		return (this.question+this.answer);
 	}
-	
-
-	
 	
 
 	/**
