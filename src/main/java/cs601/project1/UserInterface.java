@@ -25,7 +25,7 @@ public class UserInterface {
 			while(!cmd.equals("exit"))	{
 				System.out.print("Enter command line input: ");
 				cmd = scan.nextLine();
-				System.out.println("command line input was "+ cmd);
+				//System.out.println("command line input was "+ cmd);
 				String[] cmdList = cmd.split(" ");
 				if(cmd.toLowerCase().equals("exit"))	{
 					System.out.print("UserInterface closed ");	
@@ -57,10 +57,11 @@ public class UserInterface {
 		//System.out.println("cmd list second: "+cmdList[1]);
 		if(cmdProcessor.isCmdValid(cmdList))	{
 			//process cmd
-			System.out.println("Valid input");
+			//System.out.println("Valid input");
 			if(cmdList.length == 2)	{
-				cmdProcessor.processCmd(cmdList[0].toLowerCase(), cmdList[1].toLowerCase());
-			}
+				cmdProcessor.processCmd(cmdList[0].toLowerCase(), 
+						cmdList[1].replaceAll("[^A-Za-z0-9]", "").toLowerCase());
+			}					
 			else	{
 				cmdProcessor.processCmd(cmdList[0].toLowerCase());
 			}

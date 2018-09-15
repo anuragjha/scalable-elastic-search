@@ -13,7 +13,8 @@ import java.util.Set;
 
 /**
  * @author anuragjha
- *
+ * InvertedIndex class stores word as key and keeps track of recordId where the word occurs 
+ * and its frequency
  */
 
 /* https://github.com/srollins/software-dev-materials/blob/master/notes/advanced/datastructures.md
@@ -41,7 +42,11 @@ public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 		return invertedIndex;
 	}
 
-
+	/**
+	 * getTextString method breaks the TextString into words and sends it to add method
+	 * @param newString
+	 * @param recordId
+	 */
 	public void getTextString(String newString, int recordId)	{
 		String[] newWordStringArray = newString.split(" ");
 		for(String word : newWordStringArray)	{
@@ -55,6 +60,13 @@ public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 		}
 	}
 
+	
+	
+	/**
+	 * add method takes in a word and recordId adds it into a InvertedIndex
+	 * @param word
+	 * @param recordId
+	 */
 	private void add(String word, int recordId)	{
 		if(this.invertedIndex.containsKey(word))	{ // key - word is already present
 			if(this.invertedIndex.get(word).containsKey(recordId))	{ //recordId is already present
@@ -74,11 +86,12 @@ public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 	}
 
 
+	/**
+	 * searchWord method takes in a word and returns the recordIds associated with the word
+	 * @param word
+	 * @return keySet
+	 */
 	public Set<Integer> searchWord(String word)	{
-		//StringBuilder output = new StringBuilder();
-		//for(int recordId : this.invertedIndex.get(word).keySet())	{
-		//	output.append(AmazonDataStore.ONE.)
-		//}
 		return this.invertedIndex.get(word).keySet();
 	}
 

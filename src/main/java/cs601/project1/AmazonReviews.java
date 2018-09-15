@@ -25,7 +25,7 @@ public class AmazonReviews extends AmazonObject {
 	private String reviewText;
 	private double overall;
 	////private String summary;
-	////private long unixReviewTime; // will have to find correct datatype
+	////private long unixReviewTime; 
 	////private String reviewTime; //will have to find correct datatype
 
 	//constructore for Gson

@@ -19,19 +19,24 @@ import com.google.gson.JsonSyntaxException;
  * @author anuragjha
  *
  *  AmazonJsonReader reads the json file and creates the corresponding Review or QuesAns object
+ *  and then calls notifyDataStore method on the object
  * 		files - reviews_Cell_Phones_and_Accessories_5_sample.json
  * 		files - qa_Cell_Phones_and_Accessories_sample.json
  */
 public class AmazonJsonHandler {
 
 	//**// logic to check the filename to understand the type of record in the file
+	/**
+	 * checks the inputfile type and sends it across to jsonFileReader method
+	 * @param inputFile
+	 */
 	public void takeJsonInput(String inputFile)	{
 		if(inputFile.contains("reviews_Cell_Phones_and_Accessories_5"))	{
-			System.out.println("review");
+			System.out.println("processing review file");
 			this.jsonFileReader(inputFile, "review");
 		}
 		else if(inputFile.contains("qa_Cell_Phones_and_Accessories"))	{
-			System.out.println("qa");
+			System.out.println("processing qa file");
 			this.jsonFileReader(inputFile, "qa");
 		}	
 		else	{
@@ -41,7 +46,8 @@ public class AmazonJsonHandler {
 
 
 	/**
-	 * jsonFileReader method takes a input file and uses
+	 * jsonFileReader method takes a input file sends it to readReviewsData or readQuesAnsData based on 
+	 * record type
 	 * @param inputFile
 	 */
 	private void jsonFileReader(String inputFile, String inputFileType)	{
@@ -74,7 +80,7 @@ public class AmazonJsonHandler {
 			}	
 			
 		} catch(IOException ioe)	{
-			System.out.println("IO exception:\n"+ioe.getStackTrace());
+			System.out.println("IO exception:\n"+ioe.getMessage());
 		}
 		
 	}
@@ -82,7 +88,7 @@ public class AmazonJsonHandler {
 
 
 	/**
-	 * readReviewsData method takes the Json object and creates the Review Object
+	 * readReviewsData method takes the Json object and creates the Review Object then notifies datastore
 	 * @param object
 	 */
 	private void readReviewsData(JsonObject object) {
@@ -94,7 +100,7 @@ public class AmazonJsonHandler {
 
 
 	/**
-	 * readQuesAnsData takes the Json object and creates the QuesAns Object
+	 * readQuesAnsData takes the Json object and creates the QuesAns Object then notifies datastore
 	 * @param object
 	 */
 	private void readQuesAnsData(JsonObject object) {

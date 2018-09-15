@@ -6,7 +6,7 @@ package cs601.project1;
 /**
  * @author anuragjha
  *
- *		AmazonQuesAns class holds data for QuesAns type record and notifies DataStore after successful initialization
+ *	AmazonQuesAns class holds data for QuesAns type record and notifies DataStore after successful initialization
  */
 public class AmazonQuesAns extends AmazonObject {
 	
