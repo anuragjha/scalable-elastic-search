@@ -59,8 +59,9 @@ public class AmazonReviews extends AmazonObject {
 	 * overriding toString method
 	 */
 	public String toString()	{
-		return "\n\n" + this.recordId + "\n" + this.reviewerID + "\n" +this.asin +
-				"\n" + this.overall + "\n" + this.reviewText ;
+		return "\n\nRedordId: " + this.recordId + "\nReviewerId: " + this.reviewerID + 
+				"\nASIN: " +this.asin +
+				"\nOverall: " + this.overall + "\nReviewText: " + this.reviewText ;
 	}
 	
 	

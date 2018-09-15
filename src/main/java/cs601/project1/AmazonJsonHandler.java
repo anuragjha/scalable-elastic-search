@@ -114,28 +114,24 @@ public class AmazonJsonHandler {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*
+		
 		long startTime = System.currentTimeMillis();
 		AmazonJsonHandler jr = new AmazonJsonHandler();
-		jr.jsonFileReader("reviews_Cell_Phones_and_Accessories_5.json");
-		//jr.jsonFileReader("reviews_Cell_Phones_and_Accessories_5_sample.json");
+		jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5.json");
+		//jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5_sample.json");
 		//AmazonJsonHandler jr1 = new AmazonJsonHandler();
-		jr.jsonFileReader("qa_Cell_Phones_and_Accessories.json");
-		//jr.jsonFileReader("qa_Cell_Phones_and_Accessories_sample.json");
+		//jr.takeJsonInput("qa_Cell_Phones_and_Accessories.json");
+		//jr.takeJsonInput("qa_Cell_Phones_and_Accessories_sample.json");
 
 		System.out.println("Json file read and DataStore built successfully");
-
-		System.out.println("Finding something ReviewAsinDataStore: " + 
-				AmazonDataStore.ONE.reviewAsinDataStore.get("6073894996"));
-		System.out.println("Finding something ReviewWordDataStore: " + 
-						AmazonDataStore.ONE.reviewWordDataStore.get("the").getInvertedIndexValues());
-		System.out.println("Finding something quesAnsAsinDataStore: " + 
-				AmazonDataStore.ONE.quesAnsAsinDataStore.get("6073894996"));
-		System.out.println("Finding something QuesAnsWordDataStore: " + 
-			AmazonDataStore.ONE.quesAnsWordDataStore.get("the").getInvertedIndexValues());
+		
+		CmdProcessor cmd = new CmdProcessor();
+		//System.out.println("Finding something ReviewWordDataStore: " + 
+		//				cmd.reviewSearch("the"));
+		//System.out.println("Finding something quesAnsWordDataStore: " + cmd.qaSearch("the"));
 
 		System.out.println("time taken :"+ ((System.currentTimeMillis() - startTime)/60000.0) + " minutes");
-		 */
+		 
 
 	}
 

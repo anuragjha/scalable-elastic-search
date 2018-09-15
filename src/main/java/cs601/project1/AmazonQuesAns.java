@@ -54,7 +54,8 @@ public class AmazonQuesAns extends AmazonObject {
 	
 	
 	public String toString()	{
-		return "\n\n" + this.recordId + "\n" + this.asin + "\n" + this.question + "\n" + this.answer;
+		return "\n\nRecordId: " + this.recordId + "\nASIN: " + this.asin +
+				"\nQuestion: " + this.question + "\nAnswer: " + this.answer;
 	
 	}
 	

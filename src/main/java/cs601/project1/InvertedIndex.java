@@ -3,13 +3,10 @@
  */
 package cs601.project1;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * @author anuragjha
@@ -28,17 +25,18 @@ import java.util.Set;
 public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 	//+++++++// checking for comparator
 
-	private HashMap<String, LinkedHashMap<Integer,Integer>> invertedIndex;
+	private HashMap<String, HashMap<Integer,Integer>> invertedIndex;
+	//+++++private HashMap<String, LinkedList<AmazonWordDetails>> invertedIndex;
 
 	public InvertedIndex()	{
-		this.invertedIndex = new HashMap<String, LinkedHashMap<Integer,Integer>>();
+		this.invertedIndex = new HashMap<String, HashMap<Integer,Integer>>();
 	}
 
 
 	/**
 	 * @return the invertedIndex
 	 */
-	public HashMap<String, LinkedHashMap<Integer, Integer>> getIndex() {
+	public HashMap<String, HashMap<Integer, Integer>> getIndex() {
 		return invertedIndex;
 	}
 
@@ -79,7 +77,7 @@ public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 			}
 		}
 		else	{   // key - word is not present 
-			LinkedHashMap<Integer, Integer> invertedIndexValues = new LinkedHashMap<Integer, Integer>();	
+			HashMap<Integer, Integer> invertedIndexValues = new HashMap<Integer, Integer>();	
 			invertedIndexValues.put(recordId, 1);
 			this.invertedIndex.put(word, invertedIndexValues);
 		}
@@ -91,8 +89,10 @@ public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 	 * @param word
 	 * @return keySet
 	 */
-	public Set<Integer> searchWord(String word)	{
-		return this.invertedIndex.get(word).keySet();
+	public HashMap<Integer, Integer> searchWord(String word)	{
+
+		// build a datatype for this ==> this.invertedIndex.get(word).keySet() to have sorted result
+		return this.invertedIndex.get(word);
 	}
 
 
