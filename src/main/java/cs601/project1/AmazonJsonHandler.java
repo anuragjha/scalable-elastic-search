@@ -4,6 +4,7 @@
 package cs601.project1;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -32,11 +33,11 @@ public class AmazonJsonHandler {
 	 */
 	public void takeJsonInput(String inputFile)	{
 		if(inputFile.contains("reviews_Cell_Phones_and_Accessories_5"))	{
-			System.out.println("processing review file");
+			System.out.println("Processing review file");
 			this.jsonFileReader(inputFile, "review");
 		}
 		else if(inputFile.contains("qa_Cell_Phones_and_Accessories"))	{
-			System.out.println("processing qa file");
+			System.out.println("Processing qa file");
 			this.jsonFileReader(inputFile, "qa");
 		}	
 		else	{
@@ -79,8 +80,15 @@ public class AmazonJsonHandler {
 				}
 			}	
 			
-		} catch(IOException ioe)	{
-			System.out.println("IO exception:\n"+ioe.getMessage());
+		}	catch(FileNotFoundException fnfe)	{
+			System.out.println("File NotFound: "+fnfe.getMessage());
+			System.out.println("Exiting System");
+			System.exit(0);
+		}
+		catch(IOException ioe)	{
+			System.out.println("IO exception: "+ioe.getMessage());
+			System.out.println("Exiting System");
+			System.exit(1);
 		}
 		
 	}

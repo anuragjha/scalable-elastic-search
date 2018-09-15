@@ -32,8 +32,8 @@ public class AmazonSearch {
 			//jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5_sample.json");
 			//jr.takeJsonInput("qa_Cell_Phones_and_Accessories_sample.json");
 
-			System.out.println("Json file read and DataStore built successfully");
-			System.out.println("time taken :"+ ((System.currentTimeMillis() - startTime)/1000.0) + " seconds");
+			System.out.println("Json files read and DataStores built successfully");
+			System.out.println("time taken :"+ ((System.currentTimeMillis() - startTime)/1000) + " seconds");
 			UserInterface ui = new UserInterface();
 			ui.startInterface();
 

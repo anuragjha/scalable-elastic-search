@@ -51,24 +51,24 @@ public class CmdProcessor {
 
 		switch(cmdMethod)	{
 		case "find"	: 
-			System.out.println(this.asinFind(cmdTerm));
-			System.out.println("\nTotal results found: "+ this.resultCount+"\n");
+			this.asinFind(cmdTerm);
+			
 			break;
 		case "reviewsearch" : 
-			System.out.println(this.reviewSearch(cmdTerm));
-			System.out.println("\nTotal results found: "+ this.resultCount+"\n");
+			this.reviewSearch(cmdTerm);
+			
 			break;
 		case "qasearch"	: 
-			System.out.println(this.qaSearch(cmdTerm));
-			System.out.println("\nTotal results found: "+ this.resultCount+"\n");
+			this.qaSearch(cmdTerm);
+			
 			break;
 		case "reviewpartialsearch" : 
-			System.out.println(this.reviewPartialSearch(cmdTerm));
-			System.out.println("\nTotal results found: "+ this.partialResultCount+"\n");
+			this.reviewPartialSearch(cmdTerm);
+			
 			break;
 		case "qapartialsearch" : 
-			System.out.println(this.qaPartialSearch(cmdTerm));
-			System.out.println("\nTotal results found: "+ this.partialResultCount+"\n");
+			this.qaPartialSearch(cmdTerm);
+			
 			break;
 		}
 
@@ -81,62 +81,71 @@ public class CmdProcessor {
 		}
 	}
 
-	private String asinFind(String cmdTerm)	{
+	private void asinFind(String cmdTerm)	{
 		//search from hashmap of recid, AmazonReviews
 		//search from hashmap of recid, AmazonReviews
-		StringBuilder output = new StringBuilder();
+		//StringBuilder output = new StringBuilder();
 		this.resultCount = 0;
 
 		for(AmazonReviews review : AmazonDataStore.ONE.reviewDataStore.values())	{
 			if(review.getAsin().toLowerCase().equals(cmdTerm))	{
-				output.append(review.toString());
+				//output.append(review.toString());
 				this.resultCount += 1;
+				System.out.println(review.toString());
 			}
 		}
 
 		for(AmazonQuesAns quesAns : AmazonDataStore.ONE.quesAnsDataStore.values())	{
 			if(quesAns.getAsin().toLowerCase().equals(cmdTerm))	{
-				output.append(quesAns.toString());
+				//output.append(quesAns.toString());
 				this.resultCount += 1;
+				System.out.println(quesAns.toString());
 			}
 		}
 
-		if(output.length() > 1)	{
+		if(resultCount == 0)	{
 			//String noOfResults = "Total results found: "+ resultCount;
 			//output.append(noOfResults);
-			return output.toString();
+			//return output.toString();
+			System.out.println("No results found");
 		}
 		else	{
-			return output.append("No results found").toString();
+			//return output.append("No results found").toString();
+			System.out.println("\nResults found: "+ this.resultCount+"\n");
 		}
 
 	}
 
 	
-	private String reviewSearch(String cmdTerm)	{
-		StringBuilder output = new StringBuilder();
+	private void reviewSearch(String cmdTerm)	{
+		//StringBuilder output = new StringBuilder();
 		this.resultCount = 0;
 		
 		if(AmazonDataStore.ONE.reviewWordDataStore.getIndex().containsKey(cmdTerm))	{
 			//put the new datastructure to have sorted search result 
 			//userOutput.createSortedOutput(AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm)).keySet();
 			
+			//AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm)).keySet() ->
+			//  returns sorted KeySet()
 			for(int recordId : userOutput.createSortedOutput(
 					AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm)).keySet())	{
 				this.resultCount += 1;
-				output.append(AmazonDataStore.ONE.reviewDataStore.get(recordId).toString());
+				//output.append(AmazonDataStore.ONE.reviewDataStore.get(recordId).toString());
+				System.out.println(AmazonDataStore.ONE.reviewDataStore.get(recordId).toString());
 			}
 
-			return output.toString();
+			//return output.toString();
+			System.out.println("\nResults found: "+ this.resultCount+"\n");
 		}
 		else	{
-			return output.append("No results found").toString();
+			//return output.append("No results found").toString();
+			System.out.println("No results found");
 		}
 
 	}
 
-	private String qaSearch(String cmdTerm)	{
-		StringBuilder output = new StringBuilder();
+	private void qaSearch(String cmdTerm)	{
+		//StringBuilder output = new StringBuilder();
 		this.resultCount = 0;
 		if(AmazonDataStore.ONE.quesAnsWordDataStore.getIndex().containsKey(cmdTerm))	{
 			//output.append("Matching term: "+ cmdTerm);
@@ -145,62 +154,69 @@ public class CmdProcessor {
 			for(int recordId : userOutput.createSortedOutput(
 					AmazonDataStore.ONE.quesAnsWordDataStore.searchWord(cmdTerm)).keySet())	{
 				this.resultCount += 1;
-				output.append(AmazonDataStore.ONE.quesAnsDataStore.get(recordId).toString());
+				//output.append(AmazonDataStore.ONE.quesAnsDataStore.get(recordId).toString());
+				System.out.println(AmazonDataStore.ONE.reviewDataStore.get(recordId).toString());
 			}
-			return output.toString();
+			//return output.toString();
+			System.out.println("\nTotal results found: "+ this.resultCount+"\n");
 		}
 		else	{
-			return output.append("No results found").toString();
+			//return output.append("No results found").toString();
+			System.out.println("Results found");
 		}
 
 	}
 
-	private String reviewPartialSearch(String cmdTerm)	{
-		StringBuilder output = new StringBuilder();
+	private void reviewPartialSearch(String cmdTerm)	{
+		//StringBuilder output = new StringBuilder();
 		this.partialResultCount = 0;
 		for(String word : AmazonDataStore.ONE.reviewWordDataStore.getIndex().keySet())	{
 			if(word.contains(cmdTerm))	{
 				//for each word match call ->
 				//reviewSearch(String cmdTerm);
 				//output.append("Partial search ResultCount: "+ resultCount+1);
-				output.append(reviewSearch(word));
+				this.reviewSearch(word);
 				this.partialResultCount += this.resultCount;
 			}
 		}
-		if(output.length() > 1)	{
-			return output.toString();
+		if(partialResultCount == 0)	{
+			System.out.println("No results found");
+			//return output.toString();
 		}
 		else	{
-			return output.append("No results found").toString();
+			//return output.append("No results found").toString();
+			System.out.println("\nTotal results found: "+ this.partialResultCount+"\n");
 		}
 
 
 	}
 
-	private String qaPartialSearch(String cmdTerm)	{
-		StringBuilder output = new StringBuilder();
+	private void qaPartialSearch(String cmdTerm)	{
+		//StringBuilder output = new StringBuilder();
 		this.partialResultCount = 0;
 		for(String word : AmazonDataStore.ONE.quesAnsWordDataStore.getIndex().keySet())	{
 			if(word.contains(cmdTerm))	{
 				//for each word match call ->
 				//qaSearch(String cmdTerm);
-				output.append(qaSearch(word));
+				qaSearch(word);
 				this.partialResultCount += this.resultCount;
 			}
 		}
-		if(output.length() > 1)	{
-			return output.toString();
+		if(partialResultCount == 0)	{
+			System.out.println("No results found");
+			//return output.toString();
 		}
 		else	{
-			return output.append("No results found").toString();
+			//return output.append("No results found").toString();
+			System.out.println("\nTotal results found: "+ this.partialResultCount+"\n");
 		}
 
 	}
 
 
 	private String help()	{
-		return "Valid Commands are:\nfind <asin>\nreviewsearch <term>\nqasearch <term>\n"
-				+ "reviewpartialsearch <term>\nqapartialsearch <term>";
+		return "****Valid Commands are ****\n1. find <asin>\n2. reviewsearch <term>\n3. qasearch <term>\n"
+				+ "4. reviewpartialsearch <term>\n5. qapartialsearch <term>\n____________________________";
 	}
 
 	

@@ -41,7 +41,7 @@ public class AmazonWordDetails {
 		for(Map.Entry<Integer, Integer> thisRecord : sortedWordDetails)	{
 			AmazonWordDetails.sortedOutput.put(thisRecord.getKey(), thisRecord.getValue());
 		}
-		System.out.println("Sorted List :"+ sortedWordDetails.toString());
+		//System.out.println("Sorted List :"+ sortedWordDetails.toString());
 		return AmazonWordDetails.sortedOutput;
 
 	}
