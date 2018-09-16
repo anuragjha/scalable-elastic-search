@@ -14,6 +14,8 @@ public class AmazonSearch {
 	 */
 	public static void main(String[] args) {
 
+		System.out.println("Starting Project1");
+		
 		if(args.length !=  4)	{
 			System.out.println("Please input 4 cmd line params");
 			System.out.println("-reviews <review_file_name.json> -qa <qa_file_name.json>");
@@ -26,12 +28,15 @@ public class AmazonSearch {
 			
 			long startTime = System.currentTimeMillis();
 			//sending json file to AmazonJsonHandler class
-			AmazonJsonHandler jr = new AmazonJsonHandler();
-			jr.takeJsonInput(args[1], args[0]);
-			jr.takeJsonInput(args[3], args[2]);
+			//////AmazonJsonHandler jr = new AmazonJsonHandler();
+			//////jr.takeJsonInput(args[1], args[0]);
+			/////jr.takeJsonInput(args[3], args[2]);
 
-			//jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5_sample.json");
-			//jr.takeJsonInput("qa_Cell_Phones_and_Accessories_sample.json");
+			new JsonReviewHandler(args[1]); ///design works the fastest
+			new JsonQAHandler(args[3]);   ///design works the fastest
+			
+			//new AmazonReviewFileHandler(args[1]);  //will have to read whole file at once
+			//new AmazonQuesAnsFileHandler(args[3]); // will have to read whole file at once
 
 			System.out.println("Json files read and DataStores built successfully");
 			System.out.println("time taken :"+ ((System.currentTimeMillis() - startTime)/1000) + " seconds");

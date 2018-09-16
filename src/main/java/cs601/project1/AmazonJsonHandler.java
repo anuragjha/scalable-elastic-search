@@ -141,9 +141,9 @@ public class AmazonJsonHandler {
 
 		System.out.println("Json file read and DataStore built successfully");
 
-		CmdProcessor cmd = new CmdProcessor();
-		System.out.println("Finding something ReviewWordDataStore: " );
-		cmd.reviewSearch("the");
+		//CmdProcessor cmd = new CmdProcessor();
+		//System.out.println("Finding something ReviewWordDataStore: " );
+		//cmd.reviewSearch("the");
 		//System.out.println("Finding something quesAnsWordDataStore: " + cmd.qaSearch("the"));
 
 		System.out.println("time taken  AmazonJsonHandler:"+ ((System.currentTimeMillis() - startTime)/60000.0) + " minutes");

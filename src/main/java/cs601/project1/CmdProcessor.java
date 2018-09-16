@@ -26,7 +26,7 @@ public class CmdProcessor {
 	//
 	private boolean cmdValidityCheck(String[] cmdList)	{
 
-		String validCmds = "find, reviewsearch, qasearch, reviewpartialsearch, qapartialsearch";
+		String[] validCmds = {"find", "reviewsearch", "qasearch", "reviewpartialsearch", "qapartialsearch"};
 		//String cmdList[] = cmd.split(" ");
 		if(cmdList.length == 1)	{
 			if(cmdList[0].toLowerCase().equals("help"))	{
@@ -35,12 +35,14 @@ public class CmdProcessor {
 		}
 		if(cmdList.length == 2)	{
 			//System.out.println("first loop");
-			if(validCmds.contains(cmdList[0].toLowerCase()))	{
-				//	System.out.println("second loop");
-				//	if(cmdList[1].replaceAll("[^A-Za-z0-9]", "").toLowerCase().matches("[a-zA-Z0-9]+"))	{
-				//		System.out.println("third loop");
-				return true;
-				//	}
+			for(String validCmd : validCmds)	{
+				if(validCmd.matches(cmdList[0].toLowerCase()))	{
+					//	System.out.println("second loop");
+					//	if(cmdList[1].replaceAll("[^A-Za-z0-9]", "").toLowerCase().matches("[a-zA-Z0-9]+"))	{
+					//		System.out.println("third loop");
+					return true;
+					//	}
+				}
 			}
 		}
 		return false;
@@ -52,23 +54,23 @@ public class CmdProcessor {
 		switch(cmdMethod)	{
 		case "find"	: 
 			this.asinFind(cmdTerm);
-			
+
 			break;
 		case "reviewsearch" : 
 			this.reviewSearch(cmdTerm);
-			
+
 			break;
 		case "qasearch"	: 
 			this.qaSearch(cmdTerm);
-			
+
 			break;
 		case "reviewpartialsearch" : 
 			this.reviewPartialSearch(cmdTerm);
-			
+
 			break;
 		case "qapartialsearch" : 
 			this.qaPartialSearch(cmdTerm);
-			
+
 			break;
 		}
 
@@ -116,15 +118,15 @@ public class CmdProcessor {
 
 	}
 
-	
+
 	public void reviewSearch(String cmdTerm)	{
 		//StringBuilder output = new StringBuilder();
 		this.resultCount = 0;
-		
+
 		if(AmazonDataStore.ONE.reviewWordDataStore.getIndex().containsKey(cmdTerm))	{
 			//put the new datastructure to have sorted search result 
 			//userOutput.createSortedOutput(AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm)).keySet();
-			
+
 			//AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm)).keySet() ->
 			//  returns sorted KeySet()
 			for(int recordId : (userOutput.createSortedOutput(
@@ -149,7 +151,7 @@ public class CmdProcessor {
 		this.resultCount = 0;
 		if(AmazonDataStore.ONE.quesAnsWordDataStore.getIndex().containsKey(cmdTerm))	{
 			//output.append("Matching term: "+ cmdTerm);
-			
+
 			//userOutput.createSortedOutput(AmazonDataStore.ONE.quesAnsWordDataStore.searchWord(cmdTerm)).keySet();
 			for(int recordId : (userOutput.createSortedOutput(
 					AmazonDataStore.ONE.quesAnsWordDataStore.searchWord(cmdTerm))).keySet())	{
@@ -225,13 +227,13 @@ public class CmdProcessor {
 				+ "6. exit\n"
 				+ "____________________________";
 	}
-	
-	
+
+
 	public void getHelp()	{
 		System.out.println(this.help());
 	}
 
-	
+
 
 	/**
 	 * @param args

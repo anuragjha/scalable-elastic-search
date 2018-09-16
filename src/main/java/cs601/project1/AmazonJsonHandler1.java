@@ -68,7 +68,7 @@ public class AmazonJsonHandler1 {
 				BufferedReader reader = Files.newBufferedReader(path, Charset.forName("ISO-8859-1"))
 				)	{
 			String line;
-
+			
 			while((line = reader.readLine()) != null)	{
 				try {
 					//JsonElement element = parser.parse(line);
