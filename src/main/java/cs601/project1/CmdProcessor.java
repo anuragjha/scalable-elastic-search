@@ -29,7 +29,7 @@ public class CmdProcessor {
 		String validCmds = "find, reviewsearch, qasearch, reviewpartialsearch, qapartialsearch";
 		//String cmdList[] = cmd.split(" ");
 		if(cmdList.length == 1)	{
-			if(cmdList[0].equals("help"))	{
+			if(cmdList[0].toLowerCase().equals("help"))	{
 				return true;
 			}
 		}
@@ -117,7 +117,7 @@ public class CmdProcessor {
 	}
 
 	
-	private void reviewSearch(String cmdTerm)	{
+	public void reviewSearch(String cmdTerm)	{
 		//StringBuilder output = new StringBuilder();
 		this.resultCount = 0;
 		
@@ -127,8 +127,8 @@ public class CmdProcessor {
 			
 			//AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm)).keySet() ->
 			//  returns sorted KeySet()
-			for(int recordId : userOutput.createSortedOutput(
-					AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm)).keySet())	{
+			for(int recordId : (userOutput.createSortedOutput(
+					AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm))).keySet())	{
 				this.resultCount += 1;
 				//output.append(AmazonDataStore.ONE.reviewDataStore.get(recordId).toString());
 				System.out.println(AmazonDataStore.ONE.reviewDataStore.get(recordId).toString());
@@ -151,8 +151,8 @@ public class CmdProcessor {
 			//output.append("Matching term: "+ cmdTerm);
 			
 			//userOutput.createSortedOutput(AmazonDataStore.ONE.quesAnsWordDataStore.searchWord(cmdTerm)).keySet();
-			for(int recordId : userOutput.createSortedOutput(
-					AmazonDataStore.ONE.quesAnsWordDataStore.searchWord(cmdTerm)).keySet())	{
+			for(int recordId : (userOutput.createSortedOutput(
+					AmazonDataStore.ONE.quesAnsWordDataStore.searchWord(cmdTerm))).keySet())	{
 				this.resultCount += 1;
 				//output.append(AmazonDataStore.ONE.quesAnsDataStore.get(recordId).toString());
 				System.out.println(AmazonDataStore.ONE.reviewDataStore.get(recordId).toString());
@@ -215,8 +215,20 @@ public class CmdProcessor {
 
 
 	private String help()	{
-		return "****Valid Commands are ****\n1. find <asin>\n2. reviewsearch <term>\n3. qasearch <term>\n"
-				+ "4. reviewpartialsearch <term>\n5. qapartialsearch <term>\n____________________________";
+		return    "____________________________\n" 
+				+ "**** Valid Commands are ****\n"
+				+ "1. find <asin>\n"
+				+ "2. reviewsearch <term>\n"
+				+ "3. qasearch <term>\n"
+				+ "4. reviewpartialsearch <term>\n"
+				+ "5. qapartialsearch <term>\n"
+				+ "6. exit\n"
+				+ "____________________________";
+	}
+	
+	
+	public void getHelp()	{
+		System.out.println(this.help());
 	}
 
 	

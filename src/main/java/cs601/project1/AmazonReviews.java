@@ -43,7 +43,7 @@ public class AmazonReviews extends AmazonObject {
 	}
 	
 	//increment counter
-	private void incrementCounter()	{
+	public void incrementCounter()	{
 		AmazonReviews.recordCounter += 1;
 		this.recordId = AmazonReviews.recordCounter;
 	}

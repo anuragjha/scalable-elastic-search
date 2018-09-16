@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -24,29 +25,28 @@ import com.google.gson.JsonSyntaxException;
  * 		files - reviews_Cell_Phones_and_Accessories_5_sample.json
  * 		files - qa_Cell_Phones_and_Accessories_sample.json
  */
-public class AmazonJsonHandler {
+public class AmazonJsonHandler1 {
 
-
-	//private String inputFileType;
+	
+	private String inputFileType;
 	//**// logic to check the filename to understand the type of record in the file
 	/**
 	 * checks the inputfile type and sends it across to jsonFileReader method
 	 * @param inputFile
 	 */
-	public void takeJsonInput(String inputFile, String inputFileType)	{
-		if(inputFileType.equals("-reviews"))	{
+	public void takeJsonInput(String inputFile)	{
+		if((inputFile.contains("reviews")) && !(inputFile.contains("qa")))	{
 			System.out.println("Processing review file");
-			this.jsonFileReader(inputFile, inputFileType);
-
+			this.inputFileType = "review";
+			this.jsonFileReader(inputFile);
 		}
-		else if(inputFileType.equals("-qa"))	{
+		else if((inputFile.contains("qa")) && !(inputFile.contains("reviews")))	{
 			System.out.println("Processing qa file");
-			this.jsonFileReader(inputFile, inputFileType);
+			this.inputFileType = "qa";
+			this.jsonFileReader(inputFile);
 		}	
 		else	{
 			System.out.println("File type not recognised");
-			System.out.println("File type not recognised");
-			System.exit(1);
 		}
 	}
 
@@ -56,10 +56,13 @@ public class AmazonJsonHandler {
 	 * record type
 	 * @param inputFile
 	 */
-	private void jsonFileReader(String inputFile, String inputFileType)	{
-
+	private void jsonFileReader(String inputFile)	{
+		
 		JsonParser parser = new JsonParser();
 		Path path = Paths.get(inputFile);
+		
+		
+		
 
 		try(
 				BufferedReader reader = Files.newBufferedReader(path, Charset.forName("ISO-8859-1"))
@@ -70,24 +73,31 @@ public class AmazonJsonHandler {
 				try {
 					//JsonElement element = parser.parse(line);
 					JsonObject object =  parser.parse(line).getAsJsonObject();
-
-					if(inputFileType.equalsIgnoreCase("-reviews"))	{
-
-						readReviewsData(object);
+					
+					if(this.inputFileType.matches("review"))	{
+						//readReviewsData(object);
+						LinkedList<AmazonReviews> allReviewRecords = new LinkedList<AmazonReviews>();
+						AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
+						allReviewRecords.add(thisAmazonReview);
+						this.readReviewsData(allReviewRecords);
+						
 					}
-					else if(inputFileType.equalsIgnoreCase("-qa"))	{
+					else if(this.inputFileType.matches("qa"))	{
+						//readQuesAnsData(object);
+						LinkedList<AmazonQuesAns> allQuesAnsRecords = new LinkedList<AmazonQuesAns>();
+						AmazonQuesAns thisAmazonQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
+						allQuesAnsRecords.add(thisAmazonQuesAns);
+						this.readQuesAnsData(allQuesAnsRecords);
 
-						readQuesAnsData(object);
 					}
 					else	{
 						System.out.println("File type not recognised");
-						System.exit(1);
 					}
 				} catch(JsonSyntaxException jse)	{
 					System.out.println("Skipping line ...");
 				}
 			}	
-
+			
 		}	catch(FileNotFoundException fnfe)	{
 			System.out.println("File NotFound: "+fnfe.getMessage());
 			System.out.println("Exiting System");
@@ -98,7 +108,7 @@ public class AmazonJsonHandler {
 			System.out.println("Exiting System");
 			System.exit(1);
 		}
-
+		
 	}
 
 
@@ -107,10 +117,14 @@ public class AmazonJsonHandler {
 	 * readReviewsData method takes the Json object and creates the Review Object then notifies datastore
 	 * @param object
 	 */
-	private void readReviewsData(JsonObject object) {
+	private void readReviewsData(LinkedList<AmazonReviews> allReviewRecords) {
 		//https://github.com/google/gson/blob/master/UserGuide
-		AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
-		thisAmazonReview.notifyDataStore();
+		//AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
+		//++++add element to structure
+		//thisAmazonReview.notifyDataStore();
+		for(AmazonReviews amazonReview : allReviewRecords )	{
+			amazonReview.notifyDataStore();
+		}
 	}
 
 
@@ -119,9 +133,12 @@ public class AmazonJsonHandler {
 	 * readQuesAnsData takes the Json object and creates the QuesAns Object then notifies datastore
 	 * @param object
 	 */
-	private void readQuesAnsData(JsonObject object) {
-		AmazonQuesAns thisAmazonQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
-		thisAmazonQuesAns.notifyDataStore();
+	private void readQuesAnsData(LinkedList<AmazonQuesAns> allQuesAnsRecords) {
+		//AmazonQuesAns thisAmazonQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
+		//thisAmazonQuesAns.notifyDataStore();
+		for(AmazonQuesAns amazonQuesAns : allQuesAnsRecords )	{
+			amazonQuesAns.notifyDataStore();
+		}
 	}
 
 
@@ -130,24 +147,24 @@ public class AmazonJsonHandler {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
+		
 		long startTime = System.currentTimeMillis();
 		AmazonJsonHandler jr = new AmazonJsonHandler();
-		jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5.json", "-reviews");
+		jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5.json","-reviews");
 		//jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5_sample.json");
 		//AmazonJsonHandler jr1 = new AmazonJsonHandler();
-		jr.takeJsonInput("qa_Cell_Phones_and_Accessories.json", "-qa");
+		jr.takeJsonInput("qa_Cell_Phones_and_Accessories.json","-qa");
 		//jr.takeJsonInput("qa_Cell_Phones_and_Accessories_sample.json");
 
 		System.out.println("Json file read and DataStore built successfully");
-
+		
 		CmdProcessor cmd = new CmdProcessor();
 		System.out.println("Finding something ReviewWordDataStore: " );
 		cmd.reviewSearch("the");
 		//System.out.println("Finding something quesAnsWordDataStore: " + cmd.qaSearch("the"));
 
-		System.out.println("time taken  AmazonJsonHandler:"+ ((System.currentTimeMillis() - startTime)/60000.0) + " minutes");
-
+		System.out.println("time taken AmazonJsonHandler1:"+ ((System.currentTimeMillis() - startTime)/60000.0) + " minutes");
+		 
 
 	}
 

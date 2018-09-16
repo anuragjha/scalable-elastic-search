@@ -4,6 +4,7 @@
 package cs601.project1;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * @author anuragjha
@@ -35,6 +36,18 @@ public enum AmazonDataStore {
 	InvertedIndex reviewWordDataStore = new InvertedIndex();
 	InvertedIndex quesAnsWordDataStore = new InvertedIndex();
 
+	
+	/**
+	 * notifydatastore method reads an array of AmazonReviews
+	 * @param newRecord
+	 */
+	public void notifyDataStore(LinkedList<AmazonReviews> Records)	{
+		for(AmazonReviews newRecord : Records)	{
+			processNewRecord(newRecord);
+		}
+		
+	}
+	
 	/**
 	 * This method is called via notifydatastore method of AmazonReviews object
 	 * @param newRecord

@@ -16,18 +16,19 @@ public class AmazonSearch {
 
 		if(args.length !=  4)	{
 			System.out.println("Please input 4 cmd line params");
-			System.out.println("-reviews <review_file_name> -qa <qa_file_name>");
+			System.out.println("-reviews <review_file_name.json> -qa <qa_file_name.json>");
 			System.exit(1);
 		}
 		if( (args[0].equals("-reviews")) && (args[2].equals("-qa"))
-				&& (args[1].contains(".json")) 
-				&& (args[3].contains(".json")) )	{
+				&& (args[1].endsWith(".json")) 
+				&& (args[3].endsWith(".json")) )	{
 			//System.out.println("Starting");
+			
 			long startTime = System.currentTimeMillis();
 			//sending json file to AmazonJsonHandler class
 			AmazonJsonHandler jr = new AmazonJsonHandler();
-			jr.takeJsonInput(args[1]);
-			jr.takeJsonInput(args[3]);
+			jr.takeJsonInput(args[1], args[0]);
+			jr.takeJsonInput(args[3], args[2]);
 
 			//jr.takeJsonInput("reviews_Cell_Phones_and_Accessories_5_sample.json");
 			//jr.takeJsonInput("qa_Cell_Phones_and_Accessories_sample.json");
@@ -40,7 +41,7 @@ public class AmazonSearch {
 		}
 		else	{
 			System.out.println("Please input line params in specified format");
-			System.out.println("-reviews <review_file_name> -qa <qa_file_name>");
+			System.out.println("-reviews <review_file_name.json> -qa <qa_file_name.json>");
 			System.exit(1);
 		}
 

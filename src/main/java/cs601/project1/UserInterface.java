@@ -13,6 +13,7 @@ public class UserInterface {
 	public void startInterface()	{
 
 		//cmd - exit  to end interface screen
+		cmdProcessor.getHelp();
 		startScanning();
 	}
 
@@ -22,7 +23,7 @@ public class UserInterface {
 				Scanner scan = new Scanner(System.in);	
 				)	{
 
-			while(!cmd.equals("exit"))	{
+			while(!cmd.toLowerCase().equals("exit"))	{
 				System.out.print("Enter command line input: ");
 				cmd = scan.nextLine();
 				//System.out.println("command line input was "+ cmd);
@@ -39,7 +40,7 @@ public class UserInterface {
 				}
 
 			}
-			System.out.print("UserInterface closed ");	
+			System.out.println("Application Closed ");	
 			System.exit(0);
 		}
 		//to find the exact function to calll
