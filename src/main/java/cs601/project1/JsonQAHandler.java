@@ -22,13 +22,21 @@ import com.google.gson.JsonSyntaxException;
  */
 public class JsonQAHandler {
 
+	/**
+	 * public method to take in a QA inputFile and process it for DataStore
+	 * @param inputFile
+	 */
 	public JsonQAHandler(String inputFile)	{
 		this.jsonFileReader(inputFile);
 	}
 
 	
 	
-	
+	/**
+	 * jsonFileReader process QA file and then notifies DataStore
+	 * record type
+	 * @param inputFile
+	 */
 	private void jsonFileReader(String inputFile)	{
 
 		JsonParser parser = new JsonParser();
@@ -38,18 +46,15 @@ public class JsonQAHandler {
 				BufferedReader reader = Files.newBufferedReader(path, Charset.forName("ISO-8859-1"))
 				)	{
 			String line;
-			System.out.println("Processing QuesAns");
+			System.out.println("Processing QuesAns file.");
+			
 			while((line = reader.readLine()) != null)	{
 				try {
-					//JsonElement element = parser.parse(line);
+					//parses each line into JsonObject
 					JsonObject object =  parser.parse(line).getAsJsonObject();
-
-					//LinkedList<AmazonReviews> allReviewRecords = new LinkedList<AmazonReviews>();
-					//AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
-					//allReviewRecords.add(thisAmazonReview);
-					//this.readReviewsData(allReviewRecords);
-
+					//creates AmazonQuesAns object from the Json Object
 					AmazonQuesAns thisAmazonQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
+					//new QA record notifies the data Store to process it
 					thisAmazonQuesAns.notifyDataStore();
 					
 				} catch(JsonSyntaxException jse)	{

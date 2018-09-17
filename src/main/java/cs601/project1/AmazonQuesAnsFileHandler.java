@@ -19,7 +19,7 @@ public class AmazonQuesAnsFileHandler {
 	
 	private void processJsonFile(String quesAnsFile)	{
 		
-		System.out.println("Processing QuesAns");
+		System.out.println("Processing QuesAns file.");
 		for(String thisRecord : (JsonHandler.jsonFileReader(quesAnsFile)))	{
 			try	{
 			AmazonQuesAns thisAmazonQA = new Gson().fromJson(thisRecord, AmazonQuesAns.class);

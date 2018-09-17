@@ -23,55 +23,55 @@ import com.google.gson.JsonSyntaxException;
  */
 public class JsonReviewHandler {
 
-	
+	/**
+	 * public method to take in a Review inputFile and process it for DataStore
+	 * @param inputFile
+	 */
 	public JsonReviewHandler(String inputFile)	{
 		this.jsonFileReader(inputFile);
 	}
-	
-	
-	
+
+
+
 	/**
-	 * jsonFileReader method takes a input file sends it to readReviewsData or readQuesAnsData based on 
-	 * record type
+	 * jsonFileReader process Review file and then notifies DataStore 
 	 * @param inputFile
 	 */
 	private  void jsonFileReader(String inputFile)	{
-		
+
 		JsonParser parser = new JsonParser();
 		Path path = Paths.get(inputFile);	
-		
+
 
 		try(
 				BufferedReader reader = Files.newBufferedReader(path, Charset.forName("ISO-8859-1"))
 				)	{
 			String line;
-			System.out.println("Processing Reviews");
+			System.out.println("Processing Review file.");
+			
 			while((line = reader.readLine()) != null)	{
 				try {
-					//JsonElement element = parser.parse(line);
+					//parses each line into JsonObject
 					JsonObject object =  parser.parse(line).getAsJsonObject();
+					//creates AmazonReviews object from the Json Object
+					AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
+					//new Review record notifies the data Store to process it
+					thisAmazonReview.notifyDataStore();
 					
-						//LinkedList<AmazonReviews> allReviewRecords = new LinkedList<AmazonReviews>();
-						//AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
-						//allReviewRecords.add(thisAmazonReview);
-						//this.readReviewsData(allReviewRecords);
-					
-						AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
-						thisAmazonReview.notifyDataStore();
 				} catch(JsonSyntaxException jse)	{
 					System.out.println("Skipping line ...");
 				}
 			}	
-			
+
 		}	catch(IOException ioe)	{
 			System.out.println("Could not process Review file");
 			System.out.println("Exiting System");
 			System.exit(0);
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * @param args
 	 */

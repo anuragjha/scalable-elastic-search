@@ -5,66 +5,84 @@ package cs601.project1;
 
 /**
  * @author anuragjha
- *
- *	AmazonReviews class holds the Review type record and notifies DataStore after successful initialization
+ *	AmazonReviews class holds the Review type record 
+ *  and contains method to notify DataStore
  */
 public class AmazonReviews extends AmazonObject {
-	
-	//record type
-	
-	//changing recordId to integer !!
-	//private static final String recordType = "rv";
+
 	//class variable - counter
 	private static int recordCounter = 0;    //class variable recordCounter initializing 
-	private int recordId;			// instance variable for each record
+	// instance variable for each record
+	private int recordId;			
 	//data fields for Review record type
 	private String reviewerID;
 	private String asin;
-	////private String reviewerName;
-	////private int[] helpful; // array of 2 ints -  int[2]
+	//private String reviewerName;
+	//private int[] helpful; // array of 2 ints -  int[2]
 	private String reviewText;
 	private double overall;
-	////private String summary;
-	////private long unixReviewTime; 
-	////private String reviewTime; //will have to find correct datatype
+	//private String summary;
+	//private long unixReviewTime; 
+	//private String reviewTime; //will have to find correct datatype
 
-	//constructore for Gson
+	/**
+	 * empty constructor for Gson
+	 */
 	public AmazonReviews()	{
 
 	}
 	
 	//getters
+	/**
+	 * Asin getter
+	 * @return Asin
+	 */
 	public String getAsin() {
 		return this.asin;
 	}
 	
+	/**
+	 * RecordId getter
+	 * @return RecordId
+	 */
 	public int getRecordId()	{
 		return this.recordId;
 	}
 	
 	//increment counter
+	/**
+	 * incrementing static counter and assigning the value to RecordId
+	 */
 	public void incrementCounter()	{
 		AmazonReviews.recordCounter += 1;
 		this.recordId = AmazonReviews.recordCounter;
 	}
 	
-	//notify DataStore
+
+	/**
+	 * sends the new Review record to DataStore
+	 */
 	public void notifyDataStore()	{
 		this.incrementCounter();
+		//notify DataStore
 		AmazonDataStore.ONE.newRecord(this);
 	}
 	
 
 	/**
 	 * overriding toString method
+	 * @return Text representation of AmazonReviews
 	 */
 	public String toString()	{
-		return "\n\nRedordId: " + this.recordId + "\nReviewerId: " + this.reviewerID + 
-				"\nASIN: " +this.asin +
-				"\nOverall: " + this.overall + "\nReviewText: " + this.reviewText ;
+		return " RecordId: " + this.recordId + "\n\tReviewerId: " + this.reviewerID + 
+				"\n\tASIN: " +this.asin +
+				"\n\tOverall: " + this.overall + "\n\tReviewText: " + this.reviewText ;
 	}
 	
-	
+	/**
+	 * method returns Text string, which contains words to be used in Word Data Structure
+	 * @return Text String for Word Index
+	 */
 	public String getStringText()	{
 		//return	this.reviewText.replaceAll("[^A-Za-z0-9]", " ").toLowerCase();  
 		return this.reviewText;

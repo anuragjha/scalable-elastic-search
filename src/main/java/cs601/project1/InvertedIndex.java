@@ -9,50 +9,57 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * @author anuragjha
- * InvertedIndex class stores word as key and keeps track of recordId where the word occurs 
+ * InvertedIndex class implements the Inverted Index needed to build Word Data Store.
+ * This class stores word as key and keeps track of recordId where the word occurs 
  * and its frequency
+ * @author anuragjha
  */
-
-/* https://github.com/srollins/software-dev-materials/blob/master/notes/advanced/datastructures.md
- * -- changing hashmap to linkedHashMap
- * ==>> will have to implement sort at insertion 
- * 
- * https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html
- * ===>> convert linkedhashmap to hashmap to get values - coz get() is order of 1
- * 
- */
-public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
+public class InvertedIndex {
 	//+++++++// checking for comparator
 
 	private HashMap<String, HashMap<Integer,Integer>> invertedIndex;
 	//+++++private HashMap<String, LinkedList<AmazonWordDetails>> invertedIndex;
-
+	
+	/**
+	 * constructor for the InvertedIndex class
+	 */
 	public InvertedIndex()	{
 		this.invertedIndex = new HashMap<String, HashMap<Integer,Integer>>();
 	}
 
-
+	//getter
 	/**
-	 * @return the invertedIndex
+	 * @return invertedIndex
 	 */
 	public HashMap<String, HashMap<Integer, Integer>> getIndex() {
 		return invertedIndex;
 	}
+	
+	
+	/**
+	 * searchWord method takes in a word and returns the recordIds associated with the word
+	 * @param word
+	 * @return HashMap of RecordIds and Frequency for the word
+	 */
+	public HashMap<Integer, Integer> searchWord(String word)	{
 
+		// build a datatype for this ==> this.invertedIndex.get(word).keySet() to have sorted result
+		return this.invertedIndex.get(word);
+	}
+
+	
 	/**
 	 * getTextString method breaks the TextString into words and sends it to add method
 	 * @param newString
 	 * @param recordId
 	 */
-	public void getTextString(String newString, int recordId)	{
+	public void getTextStringAndAddWords(String newString, int recordId)	{
 		String[] newWordStringArray = newString.split(" ");
 		for(String word : newWordStringArray)	{
 			if((word != null) && (word != ""))	{
 				String newWord = word.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 				if(newWord.length() > 0)	{
-					//System.out.println("word:"+newWord);
-					add(newWord, recordId);
+					add(newWord, recordId); // update InvertedIndex for the particular word
 				}
 			}
 		}
@@ -84,16 +91,7 @@ public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 	}
 
 
-	/**
-	 * searchWord method takes in a word and returns the recordIds associated with the word
-	 * @param word
-	 * @return keySet
-	 */
-	public HashMap<Integer, Integer> searchWord(String word)	{
 
-		// build a datatype for this ==> this.invertedIndex.get(word).keySet() to have sorted result
-		return this.invertedIndex.get(word);
-	}
 
 
 	/**
@@ -116,12 +114,12 @@ public class InvertedIndex implements Comparator<Map.Entry<Integer,Integer>>  {
 	/*
 	 * 	/**/
 	// declaration from eclipse
-	@Override
-	public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
+//	@Override
+//	public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
 
-		return o2.getValue() - (o1.getValue());
+//		return o2.getValue() - (o1.getValue());
 
-	}
+//	}
 
 
 
