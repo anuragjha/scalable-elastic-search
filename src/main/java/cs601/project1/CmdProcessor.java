@@ -106,18 +106,18 @@ public class CmdProcessor {
 		this.resultCount = 0;
 
 		for(AmazonReviews review : AmazonDataStore.ONE.reviewDataStore.values())	{
-			if(review.getAsin().toLowerCase().equals(cmdTerm))	{
+			if(review.getAsin().equalsIgnoreCase(cmdTerm))	{
 				//output.append(review.toString());
 				this.resultCount += 1;
-				System.out.println(review.toString());
+				System.out.println("\n"+review.toString());
 			}
 		}
 
 		for(AmazonQuesAns quesAns : AmazonDataStore.ONE.quesAnsDataStore.values())	{
-			if(quesAns.getAsin().toLowerCase().equals(cmdTerm))	{
+			if(quesAns.getAsin().equalsIgnoreCase(cmdTerm))	{
 				//output.append(quesAns.toString());
 				this.resultCount += 1;
-				System.out.println(quesAns.toString());
+				System.out.println("\n"+quesAns.toString());
 			}
 		}
 
@@ -203,8 +203,8 @@ public class CmdProcessor {
 			System.out.println("\nTotal results found: "+ this.partialResultCount+"\n");
 		}
 
-
 	}
+	
 
 	/**
 	 * qaPartialSearch method prints out the QuesAns Records that partially match the term
