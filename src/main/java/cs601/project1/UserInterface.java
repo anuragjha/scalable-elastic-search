@@ -44,7 +44,7 @@ public class UserInterface {
 				String[] cmdList = cmd.split(" ");
 				//when cmd is exit
 				if(cmd.toLowerCase().equals("exit"))	{
-					System.out.print("\n\nApplication Closed");	
+					System.out.println("\n\nApplication Closed");	
 					System.exit(0);
 				}
 				//when cmd is other than exit
