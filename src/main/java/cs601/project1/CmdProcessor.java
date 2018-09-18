@@ -10,7 +10,7 @@ package cs601.project1;
 public class CmdProcessor {
 
 
-	CmdExecuter cmdExecute = new CmdExecuter();
+	//CmdExecuter cmdExecute = new CmdExecuter();
 	
 
 	/**
@@ -60,23 +60,23 @@ public class CmdProcessor {
 
 		switch(cmdMethod)	{
 		case "find"	: 
-			cmdExecute.getAsinFind(cmdTerm);
+			AmazonDataStore.ONE.getAsinFind(cmdTerm);
 
 			break;
 		case "reviewsearch" : 
-			cmdExecute.getReviewSearch(cmdTerm);
+			AmazonDataStore.ONE.getReviewSearch(cmdTerm);
 
 			break;
 		case "qasearch"	: 
-			cmdExecute.getQASearch(cmdTerm);
+			AmazonDataStore.ONE.getQASearch(cmdTerm);
 
 			break;
 		case "reviewpartialsearch" : 
-			cmdExecute.getReviewPartialSearch(cmdTerm);
+			AmazonDataStore.ONE.getReviewPartialSearch(cmdTerm);
 
 			break;
 		case "qapartialsearch" : 
-			cmdExecute.getQAPartialSearch(cmdTerm);
+			AmazonDataStore.ONE.getQAPartialSearch(cmdTerm);
 
 			break;
 		}
@@ -95,11 +95,17 @@ public class CmdProcessor {
 	}
 
 	
-
+	/**
+	 * getHelp method is public method that calls help method
+	 */
 	public void getHelp()	{
 		System.out.println(this.help());
 	}
 
+	/**
+	 * help method displays list of commands the program accepts
+	 * @return
+	 */
 	private String help()	{
 		return    "____________________________\n" 
 				+ "**** Valid Commands are ****\n"

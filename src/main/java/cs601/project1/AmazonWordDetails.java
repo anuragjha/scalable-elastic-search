@@ -8,11 +8,25 @@ import java.util.LinkedList;
 import java.util.Map;
 
 ///derived heavily out of AmazonWords class
-// Class creates user output
+// Class creates user output ///invertedIndexValues
 public class AmazonWordDetails {
 
-	private static LinkedHashMap<Integer, Integer> sortedOutput = new LinkedHashMap<Integer, Integer>();
+	private LinkedHashMap<Integer, Integer> invertedIndexValues;
+	private boolean isSorted;
+	
+	public AmazonWordDetails()	{
+		invertedIndexValues = new LinkedHashMap<Integer, Integer>();
+		isSorted = false;
+	}
+	
 
+	/**
+	 * @return the sortedOutput
+	 */
+	public LinkedHashMap<Integer, Integer> getSortedOutput() {
+		return invertedIndexValues;
+		//return createSortedOutput();
+	}
 
 
 	/**
@@ -20,29 +34,39 @@ public class AmazonWordDetails {
 	 * @param wordDetails
 	 * @return sortedOutput
 	 */
-	public LinkedHashMap<Integer, Integer> createSortedOutput( HashMap<Integer, Integer> wordDetails)	{
+	public LinkedHashMap<Integer, Integer> createSortedOutput()	{
 
 		//Sort based on the enrtyset for the map
-		if(!AmazonWordDetails.sortedOutput.isEmpty())	{
-			AmazonWordDetails.sortedOutput.clear();
-		}
+		//if(!this.sortedOutput.isEmpty())	{
+		//	this.sortedOutput.clear();
+		//}
+		if(!this.isSorted)	{ //if invertedIndex values are not sorted
+			
+			LinkedList<Map.Entry<Integer,Integer>> sortedInvertedIndexValues = 
+					new LinkedList<Map.Entry<Integer,Integer>>(this.invertedIndexValues.entrySet());
 
-		LinkedList<Map.Entry<Integer,Integer>> sortedWordDetails = 
-				new LinkedList<Map.Entry<Integer,Integer>>(wordDetails.entrySet());
+			
+			Collections.sort(sortedInvertedIndexValues, new Comparator<Map.Entry<Integer,Integer>>() {
+				public int compare(Map.Entry<Integer,Integer> r1,Map.Entry<Integer,Integer> r2){
+					return r2.getValue().compareTo(r1.getValue());
+				}
+			});
 
-		Collections.sort(sortedWordDetails, new Comparator<Map.Entry<Integer,Integer>>() {
-			public int compare(Map.Entry<Integer,Integer> r1,Map.Entry<Integer,Integer> r2){
-				return r2.getValue().compareTo(r1.getValue());
+
+			this.invertedIndexValues.clear();
+			for(Map.Entry<Integer, Integer> thisRecord : sortedInvertedIndexValues)	{
+				//this.getSortedOutput().clear();
+				this.invertedIndexValues.put(thisRecord.getKey(), thisRecord.getValue());
 			}
-		});
-
-		
-
-		for(Map.Entry<Integer, Integer> thisRecord : sortedWordDetails)	{
-			AmazonWordDetails.sortedOutput.put(thisRecord.getKey(), thisRecord.getValue());
+			//System.out.println("Sorted List :"+ sortedWordDetails.toString());
+			this.isSorted = true;
+			return this.invertedIndexValues;
 		}
-		//System.out.println("Sorted List :"+ sortedWordDetails.toString());
-		return AmazonWordDetails.sortedOutput;
+		else	{ //if invertedIndexValues sorted
+			
+			return this.invertedIndexValues;
+			
+		}
 
 	}
 

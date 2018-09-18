@@ -1,17 +1,14 @@
+/**
+ * 
+ */
 package cs601.project1;
-
-import java.util.Map;
 
 /**
  * @author anuragjha
  *
  */
-public class CmdExecuter {
+public class invertedIndexValues {
 
-	private int partialResultCount = 0;
-
-	
-	
 	/**
 	 * @param args
 	 */

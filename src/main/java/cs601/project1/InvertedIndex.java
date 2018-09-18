@@ -17,21 +17,22 @@ import java.util.Map.Entry;
 public class InvertedIndex {
 	//+++++++// checking for comparator
 
-	private HashMap<String, HashMap<Integer,Integer>> invertedIndex;
+	private HashMap<String, AmazonWordDetails> invertedIndex;
 	//+++++private HashMap<String, LinkedList<AmazonWordDetails>> invertedIndex;
+	//private AmazonWordDetails invertedIndexValues;
 	
 	/**
 	 * constructor for the InvertedIndex class
 	 */
 	public InvertedIndex()	{
-		this.invertedIndex = new HashMap<String, HashMap<Integer,Integer>>();
+		this.invertedIndex = new HashMap<String, AmazonWordDetails>();
 	}
 
 	//getter
 	/**
 	 * @return invertedIndex
 	 */
-	public HashMap<String, HashMap<Integer, Integer>> getIndex() {
+	public HashMap<String, AmazonWordDetails> getIndex() {
 		return invertedIndex;
 	}
 	
@@ -41,7 +42,7 @@ public class InvertedIndex {
 	 * @param word
 	 * @return HashMap of RecordIds and Frequency for the word
 	 */
-	public HashMap<Integer, Integer> searchWord(String word)	{
+	public AmazonWordDetails searchWord(String word)	{
 
 		// build a datatype for this ==> this.invertedIndex.get(word).keySet() to have sorted result
 		return this.invertedIndex.get(word);
@@ -74,25 +75,32 @@ public class InvertedIndex {
 	 */
 	private void add(String word, int recordId)	{
 		if(this.invertedIndex.containsKey(word))	{ // key - word is already present
-			if(this.invertedIndex.get(word).containsKey(recordId))	{ //recordId is already present
-				int currentFreq = this.invertedIndex.get(word).get(recordId);
+			if(this.invertedIndex.get(word).getSortedOutput().containsKey(recordId))	{ //recordId is already present
+				int currentFreq = this.invertedIndex.get(word).getSortedOutput().get(recordId);
 				currentFreq += 1;
-				this.invertedIndex.get(word).put(recordId, currentFreq);
+				this.invertedIndex.get(word).getSortedOutput().put(recordId, currentFreq);
 			}
 			else	{  //recordId is not present/// but word is present
-				this.invertedIndex.get(word).put(recordId, 1);
+				this.invertedIndex.get(word).getSortedOutput().put(recordId, 1);
 			}
 		}
 		else	{   // key - word is not present 
-			HashMap<Integer, Integer> invertedIndexValues = new HashMap<Integer, Integer>();	
-			invertedIndexValues.put(recordId, 1);
-			this.invertedIndex.put(word, invertedIndexValues);
+			//HashMap<Integer, Integer> invertedIndexValues = new HashMap<Integer, Integer>();	
+			AmazonWordDetails invertedIndexValue = new AmazonWordDetails();
+			//invertedIndexValues.put(recordId, 1);
+			invertedIndexValue.getSortedOutput().put(recordId, 1);
+			this.invertedIndex.put(word, invertedIndexValue);
 		}
 	}
 
 
-
-
+//	public AmazonWordDetails searchInvertedIndex(String cmdTerm)	{
+//		if(this.invertedIndex.containsKey(cmdTerm))	{
+//			this.invertedIndex.get(cmdTerm).createSortedOutput(wordDetails)
+//		}
+//	}
+	
+	
 
 	/**
 	 * @param args

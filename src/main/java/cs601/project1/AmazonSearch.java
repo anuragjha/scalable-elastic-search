@@ -32,6 +32,7 @@ public class AmazonSearch {
 		
 		System.out.println("Json files read and DataStores built successfully");
 		System.out.println("time taken :"+ ((System.currentTimeMillis() - startTime)/1000) + " seconds");
+		//System.out.println(AmazonDataStore.ONE.reviewWordDataStore.getIndex().values().entrySet());
 		
 		//Instantiate User Interface and start scanning
 		UserInterface ui = new UserInterface();
