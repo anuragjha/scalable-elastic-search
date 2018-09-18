@@ -4,13 +4,11 @@
 package cs601.project1;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -48,7 +46,7 @@ public class JsonReviewHandler {
 				)	{
 			String line;
 			System.out.println("Processing Review file.");
-			
+
 			while((line = reader.readLine()) != null)	{
 				try {
 					//parses each line into JsonObject
@@ -57,7 +55,7 @@ public class JsonReviewHandler {
 					AmazonReviews thisAmazonReview = new Gson().fromJson(object, AmazonReviews.class);
 					//new Review record notifies the data Store to process it
 					thisAmazonReview.notifyDataStore();
-					
+
 				} catch(JsonSyntaxException jse)	{
 					System.out.println("Skipping line ...");
 				}

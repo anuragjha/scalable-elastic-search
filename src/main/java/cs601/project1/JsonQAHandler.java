@@ -4,7 +4,6 @@
 package cs601.project1;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -30,8 +29,8 @@ public class JsonQAHandler {
 		this.jsonFileReader(inputFile);
 	}
 
-	
-	
+
+
 	/**
 	 * jsonFileReader process QA file and then notifies DataStore
 	 * record type
@@ -47,7 +46,7 @@ public class JsonQAHandler {
 				)	{
 			String line;
 			System.out.println("Processing QuesAns file.");
-			
+
 			while((line = reader.readLine()) != null)	{
 				try {
 					//parses each line into JsonObject
@@ -56,7 +55,7 @@ public class JsonQAHandler {
 					AmazonQuesAns thisAmazonQuesAns = new Gson().fromJson(object, AmazonQuesAns.class);
 					//new QA record notifies the data Store to process it
 					thisAmazonQuesAns.notifyDataStore();
-					
+
 				} catch(JsonSyntaxException jse)	{
 					System.out.println("Skipping line ...");
 				}

@@ -49,7 +49,7 @@ public class CmdLineArgsValidator {
 		}
 	}
 
-	
+
 	/**
 	 * checkArgLength method checks for the number of arguments
 	 * @param args

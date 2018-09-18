@@ -3,10 +3,7 @@
  */
 package cs601.project1;
 
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * InvertedIndex class implements the Inverted Index needed to build Word Data Store.
@@ -15,12 +12,9 @@ import java.util.Map.Entry;
  * @author anuragjha
  */
 public class InvertedIndex {
-	//+++++++// checking for comparator
 
 	private HashMap<String, AmazonWordDetails> invertedIndex;
-	//+++++private HashMap<String, LinkedList<AmazonWordDetails>> invertedIndex;
-	//private AmazonWordDetails invertedIndexValues;
-	
+
 	/**
 	 * constructor for the InvertedIndex class
 	 */
@@ -35,12 +29,12 @@ public class InvertedIndex {
 	public HashMap<String, AmazonWordDetails> getIndex() {
 		return invertedIndex;
 	}
-	
-	
+
+
 	/**
 	 * searchWord method takes in a word and returns the recordIds associated with the word
 	 * @param word
-	 * @return HashMap of RecordIds and Frequency for the word
+	 * @return LinkedHashMap of RecordIds and Frequency for the word
 	 */
 	public AmazonWordDetails searchWord(String word)	{
 
@@ -48,7 +42,7 @@ public class InvertedIndex {
 		return this.invertedIndex.get(word);
 	}
 
-	
+
 	/**
 	 * getTextString method breaks the TextString into words and sends it to add method
 	 * @param newString
@@ -66,8 +60,8 @@ public class InvertedIndex {
 		}
 	}
 
-	
-	
+
+
 	/**
 	 * add method takes in a word and recordId adds it into a InvertedIndex
 	 * @param word
@@ -75,62 +69,39 @@ public class InvertedIndex {
 	 */
 	private void add(String word, int recordId)	{
 		if(this.invertedIndex.containsKey(word))	{ // key - word is already present
-			if(this.invertedIndex.get(word).getSortedOutput().containsKey(recordId))	{ //recordId is already present
-				int currentFreq = this.invertedIndex.get(word).getSortedOutput().get(recordId);
+			if(this.invertedIndex.get(word).getInvertedIndexValues().containsKey(recordId))	{ //recordId is already present
+				int currentFreq = this.invertedIndex.get(word).getInvertedIndexValues().get(recordId);
 				currentFreq += 1;
-				this.invertedIndex.get(word).getSortedOutput().put(recordId, currentFreq);
+				this.invertedIndex.get(word).getInvertedIndexValues().put(recordId, currentFreq);
 			}
 			else	{  //recordId is not present/// but word is present
-				this.invertedIndex.get(word).getSortedOutput().put(recordId, 1);
+				this.invertedIndex.get(word).getInvertedIndexValues().put(recordId, 1);
 			}
 		}
 		else	{   // key - word is not present 
-			//HashMap<Integer, Integer> invertedIndexValues = new HashMap<Integer, Integer>();	
 			AmazonWordDetails invertedIndexValue = new AmazonWordDetails();
-			//invertedIndexValues.put(recordId, 1);
-			invertedIndexValue.getSortedOutput().put(recordId, 1);
+			invertedIndexValue.getInvertedIndexValues().put(recordId, 1);
 			this.invertedIndex.put(word, invertedIndexValue);
 		}
 	}
 
 
-//	public AmazonWordDetails searchInvertedIndex(String cmdTerm)	{
-//		if(this.invertedIndex.containsKey(cmdTerm))	{
-//			this.invertedIndex.get(cmdTerm).createSortedOutput(wordDetails)
-//		}
-//	}
-	
-	
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		InvertedIndex ir = new InvertedIndex();
+		//InvertedIndex ir = new InvertedIndex();
 		//ir.getTextString("This Text is new .. whaat ??", 1);
 		//ir.getTextString("this te'xt was new .. what ??", 2);
 		//ir.getTextString("Th-is Text was old .. whaat ??", 3);
 		//ir.getTextString("This Text is old .. whaat ??", 4);
 		//ir.getTextString("This This is n:ew .. whaat ??", 5);
 
-		System.out.println("InvertedIndex: " + ir.getIndex().toString() );
+		//System.out.println("InvertedIndex: " + ir.getIndex().toString() );
 
 
 	}
-
-	/*
-	 * 	/**/
-	// declaration from eclipse
-//	@Override
-//	public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
-
-//		return o2.getValue() - (o1.getValue());
-
-//	}
-
-
-
-
 
 }

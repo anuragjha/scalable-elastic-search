@@ -7,65 +7,78 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-///derived heavily out of AmazonWords class
-// Class creates user output ///invertedIndexValues
+/**
+ * AmazonWordDetails class is for storing details of a particular word
+ * - so every unique word will have its own AmazonWordDetails object
+ * @author anuragjha
+ *
+ */
 public class AmazonWordDetails {
 
-	private LinkedHashMap<Integer, Integer> invertedIndexValues;
+
+	private HashMap<Integer, Integer> invertedIndexValues;
+	private LinkedHashMap<Integer, Integer> sortedInvertedIndexValues;
 	private boolean isSorted;
-	
-	public AmazonWordDetails()	{
-		invertedIndexValues = new LinkedHashMap<Integer, Integer>();
-		isSorted = false;
-	}
-	
 
 	/**
-	 * @return the sortedOutput
+	 * constructor for AmazonWordDetails class
 	 */
-	public LinkedHashMap<Integer, Integer> getSortedOutput() {
+	public AmazonWordDetails()	{
+		invertedIndexValues = new HashMap<Integer, Integer>();
+		isSorted = false;
+	}
+
+
+	/**
+	 * getter for 
+	 * @return the invertedIndexValues
+	 */
+	public Map<Integer, Integer> getInvertedIndexValues() {
 		return invertedIndexValues;
 		//return createSortedOutput();
 	}
 
 
 	/**
-	 * createCortedOutput method takes in Hashmap and returns a sorted Linked Hashmap of Details of a word
+	 * createSortedOutput is a public method calls SortOutput method
+	 * @return
+	 */
+	public Map<Integer, Integer> createSortedOutput()	{
+		return this.SortOutput();
+	}
+
+	/**
+	 * SortOutput method returns a sorted Linked Hashmap of recordIds and Count
 	 * @param wordDetails
 	 * @return sortedOutput
 	 */
-	public LinkedHashMap<Integer, Integer> createSortedOutput()	{
+	public Map<Integer, Integer> SortOutput()	{
 
-		//Sort based on the enrtyset for the map
-		//if(!this.sortedOutput.isEmpty())	{
-		//	this.sortedOutput.clear();
-		//}
 		if(!this.isSorted)	{ //if invertedIndex values are not sorted
-			
-			LinkedList<Map.Entry<Integer,Integer>> sortedInvertedIndexValues = 
+
+			LinkedList<Map.Entry<Integer,Integer>> sortedInvertedIndexValueList = 
 					new LinkedList<Map.Entry<Integer,Integer>>(this.invertedIndexValues.entrySet());
 
-			
-			Collections.sort(sortedInvertedIndexValues, new Comparator<Map.Entry<Integer,Integer>>() {
+			Collections.sort(sortedInvertedIndexValueList, new Comparator<Map.Entry<Integer,Integer>>() {
 				public int compare(Map.Entry<Integer,Integer> r1,Map.Entry<Integer,Integer> r2){
 					return r2.getValue().compareTo(r1.getValue());
 				}
 			});
 
-
-			this.invertedIndexValues.clear();
-			for(Map.Entry<Integer, Integer> thisRecord : sortedInvertedIndexValues)	{
-				//this.getSortedOutput().clear();
-				this.invertedIndexValues.put(thisRecord.getKey(), thisRecord.getValue());
+			this.invertedIndexValues.clear(); //emptying the previous unsorted entries
+			sortedInvertedIndexValues = new LinkedHashMap<Integer, Integer>();
+			for(Map.Entry<Integer, Integer> thisRecord : sortedInvertedIndexValueList)	{
+				sortedInvertedIndexValues.put(thisRecord.getKey(), thisRecord.getValue());
 			}
-			//System.out.println("Sorted List :"+ sortedWordDetails.toString());
+			//invertedIndexValues.
 			this.isSorted = true;
-			return this.invertedIndexValues;
+			return this.sortedInvertedIndexValues;
+
 		}
 		else	{ //if invertedIndexValues sorted
-			
-			return this.invertedIndexValues;
-			
+
+			return this.sortedInvertedIndexValues;
+
 		}
 
 	}

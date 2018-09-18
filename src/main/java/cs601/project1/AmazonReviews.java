@@ -31,7 +31,7 @@ public class AmazonReviews extends AmazonObject {
 	public AmazonReviews()	{
 
 	}
-	
+
 	//getters
 	/**
 	 * Asin getter
@@ -40,7 +40,7 @@ public class AmazonReviews extends AmazonObject {
 	public String getAsin() {
 		return this.asin;
 	}
-	
+
 	/**
 	 * RecordId getter
 	 * @return RecordId
@@ -48,7 +48,7 @@ public class AmazonReviews extends AmazonObject {
 	public int getRecordId()	{
 		return this.recordId;
 	}
-	
+
 	//increment counter
 	/**
 	 * incrementing static counter and assigning the value to RecordId
@@ -57,7 +57,7 @@ public class AmazonReviews extends AmazonObject {
 		AmazonReviews.recordCounter += 1;
 		this.recordId = AmazonReviews.recordCounter;
 	}
-	
+
 
 	/**
 	 * sends the new Review record to DataStore
@@ -67,7 +67,7 @@ public class AmazonReviews extends AmazonObject {
 		//notify DataStore
 		AmazonDataStore.ONE.newRecord(this);
 	}
-	
+
 
 	/**
 	 * overriding toString method
@@ -78,7 +78,7 @@ public class AmazonReviews extends AmazonObject {
 				"\n\tASIN: " +this.asin +
 				"\n\tOverall: " + this.overall + "\n\tReviewText: " + this.reviewText ;
 	}
-	
+
 	/**
 	 * method returns Text string, which contains words to be used in Word Data Structure
 	 * @return Text String for Word Index

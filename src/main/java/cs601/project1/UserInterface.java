@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class UserInterface {
 
 	//contains CmdProcessor instance to help with cmd execution
-	CmdProcessor cmdProcessor;
+	private CmdProcessor cmdProcessor;
 
 	/**
 	 * constructor for UserInterface class
@@ -38,7 +38,7 @@ public class UserInterface {
 				)	{
 
 			while(!cmd.toLowerCase().equals("exit"))	{
-				
+
 				System.out.print("Enter command line input: ");
 				cmd = scan.nextLine();
 				String[] cmdList = cmd.split(" ");
@@ -82,8 +82,8 @@ public class UserInterface {
 
 	public static void main(String[] args)	{
 
-		UserInterface ui = new UserInterface();
-		ui.startInterface();
+	//	UserInterface ui = new UserInterface();
+	//	ui.startInterface();
 	}
 
 

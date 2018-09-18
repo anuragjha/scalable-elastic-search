@@ -15,7 +15,7 @@ public class AmazonSearch {
 	public static void main(String[] args) {
 
 		long startTime = System.currentTimeMillis();
-		
+
 		System.out.println("Starting Project1\n"); // Start of control flow
 		//validates arguments and returns true is everything is correct
 		if(new CmdLineArgsValidator().check(args))	{ 
@@ -23,17 +23,17 @@ public class AmazonSearch {
 			///fastest with current design of reading each record/line of file
 			new JsonReviewHandler(args[1]); 
 			new JsonQAHandler(args[3]);
-		
+
 		}else	{
 			//validation of arguments failed
 			System.out.println("Exiting application");
 			System.exit(0);
 		}
-		
+
 		System.out.println("Json files read and DataStores built successfully");
 		System.out.println("time taken :"+ ((System.currentTimeMillis() - startTime)/1000) + " seconds");
 		//System.out.println(AmazonDataStore.ONE.reviewWordDataStore.getIndex().values().entrySet());
-		
+
 		//Instantiate User Interface and start scanning
 		UserInterface ui = new UserInterface();
 		ui.startInterface();

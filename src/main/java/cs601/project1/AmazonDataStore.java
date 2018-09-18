@@ -12,8 +12,8 @@ import java.util.Map;
 public enum AmazonDataStore {
 
 	ONE;
-	
-	
+
+
 	// key - recId, value - AmazonObject
 	private HashMap<Integer, AmazonReviews> reviewDataStore = new HashMap<Integer, AmazonReviews>();
 	private HashMap<Integer, AmazonQuesAns> quesAnsDataStore = new HashMap<Integer, AmazonQuesAns>();
@@ -23,8 +23,8 @@ public enum AmazonDataStore {
 	private InvertedIndex reviewWordDataStore = new InvertedIndex();
 	private InvertedIndex quesAnsWordDataStore = new InvertedIndex();
 
-	
-	//private AmazonWordDetails userOutput = new AmazonWordDetails();	
+
+	//variables to keep count of search results
 	private int resultCount = 0;
 	private int partialResultCount = 0;
 
@@ -35,9 +35,9 @@ public enum AmazonDataStore {
 	 */
 	public void newRecord(AmazonReviews newRecord)	{
 		processNewRecord(newRecord);
-		
+
 	}
-	
+
 	/**
 	 * processNewRecord method implements update of Review DataStores for each new Record
 	 * @param newRecord
@@ -50,8 +50,8 @@ public enum AmazonDataStore {
 		this.reviewWordDataStore.getTextStringAndAddWords(
 				newRecord.getStringText(), newRecord.getRecordId());
 	}
-	
-	
+
+
 	/**
 	 * newRecord method is called via notifyDataStore method of AmazonQuesAns object
 	 * This method process the new record to 2 QuesAns DataStores
@@ -60,7 +60,7 @@ public enum AmazonDataStore {
 	public void newRecord(AmazonQuesAns newRecord)	{
 		processNewRecord(newRecord);
 	}
-	
+
 	/**
 	 * processNewRecord method implements update of QuesAns DataStores for each new Record
 	 * @param newRecord
@@ -74,9 +74,9 @@ public enum AmazonDataStore {
 				newRecord.getStringText(), newRecord.getRecordId());
 	}
 
-	
-	//adding searching methods
-	
+
+	//adding search methods here
+
 	//finding ASIN
 	/**
 	 * getAsinFind method is a public method that calls asinFind method
@@ -85,14 +85,14 @@ public enum AmazonDataStore {
 	public void getAsinFind(String cmdTerm)	{
 		this.asinFind(cmdTerm);
 	}
-	
-	
+
+
 	/**
 	 * asinFind method finds all the Review and QA record for matching ASIN
 	 * @param cmdTerm
 	 */
 	private void asinFind(String cmdTerm)	{
-		 this.resultCount = 0;
+		this.resultCount = 0;
 
 		for(AmazonReviews review : AmazonDataStore.ONE.reviewDataStore.values())	{
 			if(review.getAsin().equalsIgnoreCase(cmdTerm))	{
@@ -115,10 +115,10 @@ public enum AmazonDataStore {
 			System.out.println("\nResults found: "+ resultCount+"\n");
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * getReviewSearch method is a public method that calls reviewSearch method
 	 * @param cmdTerm
@@ -126,8 +126,8 @@ public enum AmazonDataStore {
 	public void getReviewSearch(String cmdTerm)	{
 		this.reviewSearch(cmdTerm);
 	}
-	
-		
+
+
 	/**
 	 * reviewSearch method prints out the Review Records that match the term
 	 * @param cmdTerm
@@ -137,15 +137,11 @@ public enum AmazonDataStore {
 		this.resultCount = 0;
 
 		if(AmazonDataStore.ONE.reviewWordDataStore.getIndex().containsKey(cmdTerm))	{ //word in store
-			//put the new data structure to have sorted search result 
-			//for(Map.Entry<Integer, Integer> recordId : (userOutput.createSortedOutput(
-			//		AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm))).entrySet())	{
 			for(Map.Entry<Integer, Integer> recordId :
 				AmazonDataStore.ONE.reviewWordDataStore.searchWord(cmdTerm).createSortedOutput().entrySet())	{
-				//AmazonDataStore.ONE.reviewWordDataStore.getIndex().get(cmdTerm).createSortedOutput().entrySet())	{
+
 				this.resultCount += 1;
 				System.out.println("\nSearched term: "+ cmdTerm + "\t|\tFrequency: "+recordId.getValue());
-				//System.out.println(AmazonDataStore.ONE.reviewDataStore.get(recordId.getKey()).toString());
 				System.out.println(AmazonDataStore.ONE.reviewDataStore.get(recordId.getKey()).toString());
 			}
 			System.out.println("\nResults found: "+ this.resultCount+"\n");
@@ -157,7 +153,7 @@ public enum AmazonDataStore {
 	}
 
 
-	
+
 	/**
 	 * getQASearch method is a public method that calls qaSearch method
 	 * @param cmdTerm
@@ -165,7 +161,7 @@ public enum AmazonDataStore {
 	public void getQASearch(String cmdTerm)	{
 		this.qaSearch(cmdTerm);
 	}
-	
+
 
 	/**
 	 * qaSearch method prints out the QuesAns Records that match the term
@@ -176,9 +172,9 @@ public enum AmazonDataStore {
 		this.resultCount = 0;
 
 		if(AmazonDataStore.ONE.quesAnsWordDataStore.getIndex().containsKey(cmdTerm))	{ //word in store
-			//put the new data structure to have sorted search result 
 			for(Map.Entry<Integer, Integer> recordId : 
 				AmazonDataStore.ONE.quesAnsWordDataStore.searchWord(cmdTerm).createSortedOutput().entrySet())	{
+
 				this.resultCount += 1;
 				System.out.println("\nSearched term: "+ cmdTerm + "\t|\tFrequency: "+recordId.getValue());
 				System.out.println(AmazonDataStore.ONE.reviewDataStore.get(recordId.getKey()).toString());
@@ -200,7 +196,7 @@ public enum AmazonDataStore {
 	public void getReviewPartialSearch(String cmdTerm)	{
 		this.reviewPartialSearch(cmdTerm);
 	}
-	
+
 	/**
 	 * reviewPartialSearch method prints out the Review Records that partially match the term
 	 * @param cmdTerm
@@ -232,13 +228,13 @@ public enum AmazonDataStore {
 	public void getQAPartialSearch(String cmdTerm)	{
 		this.qaPartialSearch(cmdTerm);
 	}
-	
+
 	/**
 	 * qaPartialSearch method prints out the QuesAns Records that partially match the term
 	 * @param cmdTerm
 	 */
 	private void qaPartialSearch(String cmdTerm)	{
-		
+
 		this.partialResultCount = 0;
 		for(String word : AmazonDataStore.ONE.quesAnsWordDataStore.getIndex().keySet())	{
 			if(word.contains(cmdTerm))	{
@@ -257,8 +253,8 @@ public enum AmazonDataStore {
 	}
 
 
-	
-	
+
+
 	/**
 	 * @param args
 	 */

@@ -10,9 +10,6 @@ package cs601.project1;
 public class CmdProcessor {
 
 
-	//CmdExecuter cmdExecute = new CmdExecuter();
-	
-
 	/**
 	 * method starts to check if the user inputs are valid
 	 * @param cmdList
@@ -94,7 +91,7 @@ public class CmdProcessor {
 		}
 	}
 
-	
+
 	/**
 	 * getHelp method is public method that calls help method
 	 */
@@ -117,8 +114,6 @@ public class CmdProcessor {
 				+ "6. exit\n"
 				+ "____________________________";
 	}
-
-
 
 
 
