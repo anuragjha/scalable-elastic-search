@@ -38,7 +38,7 @@ public class InvertedIndex {
 	 */
 	public AmazonWordDetails searchWord(String word)	{
 
-		// build a datatype for this ==> this.invertedIndex.get(word).keySet() to have sorted result
+		// build a datatype for this ==> this.invertedIndex.get(word) to have sorted result
 		return this.invertedIndex.get(word);
 	}
 

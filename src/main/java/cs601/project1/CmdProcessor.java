@@ -57,23 +57,23 @@ public class CmdProcessor {
 
 		switch(cmdMethod)	{
 		case "find"	: 
-			AmazonDataStore.ONE.getAsinFind(cmdTerm);
+			AmazonDataStore.ONE.getSearcher().getAsinFind(cmdTerm);
 
 			break;
 		case "reviewsearch" : 
-			AmazonDataStore.ONE.getReviewSearch(cmdTerm);
+			AmazonDataStore.ONE.getSearcher().getReviewSearch(cmdTerm);
 
 			break;
 		case "qasearch"	: 
-			AmazonDataStore.ONE.getQASearch(cmdTerm);
+			AmazonDataStore.ONE.getSearcher().getQASearch(cmdTerm);
 
 			break;
 		case "reviewpartialsearch" : 
-			AmazonDataStore.ONE.getReviewPartialSearch(cmdTerm);
+			AmazonDataStore.ONE.getSearcher().getReviewPartialSearch(cmdTerm);
 
 			break;
 		case "qapartialsearch" : 
-			AmazonDataStore.ONE.getQAPartialSearch(cmdTerm);
+			AmazonDataStore.ONE.getSearcher().getQAPartialSearch(cmdTerm);
 
 			break;
 		}
