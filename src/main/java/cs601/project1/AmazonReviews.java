@@ -11,9 +11,9 @@ package cs601.project1;
 public class AmazonReviews extends AmazonObject {
 
 	//class variable - counter
-	private static int recordCounter = 0;    //class variable recordCounter initializing 
+	//private static int recordCounter = 0;    //class variable recordCounter initializing 
 	// instance variable for each record
-	private int recordId;			
+	//private int recordId;			
 	//data fields for Review record type
 	private String reviewerID;
 	private String asin;
@@ -47,25 +47,6 @@ public class AmazonReviews extends AmazonObject {
 	 */
 	public int getRecordId()	{
 		return this.recordId;
-	}
-
-	//increment counter
-	/**
-	 * incrementing static counter and assigning the value to RecordId
-	 */
-	public void incrementCounter()	{
-		AmazonReviews.recordCounter += 1;
-		this.recordId = AmazonReviews.recordCounter;
-	}
-
-
-	/**
-	 * sends the new Review record to DataStore
-	 */
-	public void notifyDataStore()	{
-		this.incrementCounter();
-		//notify DataStore
-		AmazonDataStore.ONE.newRecord(this);
 	}
 
 

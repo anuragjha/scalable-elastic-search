@@ -6,15 +6,15 @@ import java.util.HashMap;
 /**
  * @author anuragjha
  *	AmazonDataStore class contains all the Data Structure to hold Record details and Word details
- *  and contain methods to update those data structure
+ *  and contain methods to update those data structure, also a AmazonDataStoreSearcher Object
  */
 public enum AmazonDataStore {
 
 	ONE;
 
 	private AmazonDataStoreSearcher searcher = new AmazonDataStoreSearcher();
-	
-	
+
+
 	// key - recId, value - AmazonObject
 	private HashMap<Integer, AmazonReviews> reviewDataStore = new HashMap<Integer, AmazonReviews>();
 	private HashMap<Integer, AmazonQuesAns> quesAnsDataStore = new HashMap<Integer, AmazonQuesAns>();
@@ -23,8 +23,8 @@ public enum AmazonDataStore {
 	// key - word, value - list of recordIds and frequency 
 	private InvertedIndex reviewWordDataStore = new InvertedIndex();
 	private InvertedIndex quesAnsWordDataStore = new InvertedIndex();
-	
-	
+
+
 	/**
 	 * @return the searcher
 	 */
@@ -61,14 +61,20 @@ public enum AmazonDataStore {
 	}
 
 	/**
-	 * newRecord method is called via notifyDataStore method of AmazonReviews object
+	 * newRecord method is called via notifyDataStore method of Amazon objects - AmazonReviews and AmazonQuesAns
 	 * This method process the new record to 2 Review DataStores
 	 * @param newRecord
 	 */
-	public void newRecord(AmazonReviews newRecord)	{
-		processNewRecord(newRecord);
+	public void newRecord(AmazonObject newRecord)	{
+		if(newRecord instanceof AmazonReviews)	{
+			processNewRecord((AmazonReviews)newRecord);
+		}
+		else if(newRecord instanceof AmazonQuesAns)	{
+			processNewRecord((AmazonQuesAns)newRecord);
+		}
 
 	}
+
 
 	/**
 	 * processNewRecord method implements update of Review DataStores for each new Record
@@ -82,16 +88,7 @@ public enum AmazonDataStore {
 		this.reviewWordDataStore.getTextStringAndAddWords(
 				newRecord.getStringText(), newRecord.getRecordId());
 	}
-	
-	
-	/**
-	 * newRecord method is called via notifyDataStore method of AmazonQuesAns object
-	 * This method process the new record to 2 QuesAns DataStores
-	 * @param newRecord
-	 */
-	public void newRecord(AmazonQuesAns newRecord)	{
-		processNewRecord(newRecord);
-	}
+
 
 	/**
 	 * processNewRecord method implements update of QuesAns DataStores for each new Record

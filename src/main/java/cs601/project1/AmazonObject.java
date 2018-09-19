@@ -9,12 +9,33 @@ package cs601.project1;
  */
 public abstract class AmazonObject {
 
+	protected int recordId;
+	protected static int recordCounter = 0;
+	
 	abstract String getStringText();
 
 	abstract int getRecordId();
+	
+	
+	//increment counter
+	/**
+	 * incrementing static counter and assigning the value to RecordId
+	 */
+	private void incrementCounter()	{
+		AmazonObject.recordCounter += 1;
+		this.recordId = AmazonObject.recordCounter;
+	}
 
-	abstract void notifyDataStore();
-
+	
+	/**
+	 * sends the new AmazonObject record to DataStore
+	 */
+	public void notifyDataStore()	{
+		this.incrementCounter();
+		//notify DataStore
+		AmazonDataStore.ONE.newRecord(this);
+	}
+	
 	/**
 	 * @param args
 	 */
