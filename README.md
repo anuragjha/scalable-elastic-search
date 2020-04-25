@@ -1,8 +1,6 @@
 Project 1 - Sclable Elastic search for Amazon Review and Q&A Search
 ===================================================================
 
-### Due - Wednesday, September 19, 2018 - 11am
-
 For this project, you will implement a program to allow searching of a database of Amazon reviews and Q&A content. You will practice using the following:
 
 - Efficient data structures
